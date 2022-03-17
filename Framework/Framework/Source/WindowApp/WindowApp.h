@@ -19,11 +19,9 @@ public:
 
 	void Do();
 
-	static LRESULT CALLBACK TossWindowMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+	void ToggleScreenMode();
 
-	//////////////////////////////////////////////////////////////////////////////
-	// 내부 전용 함수
-	void ApplyFullScreenWindow();
+	static LRESULT CALLBACK TossWindowMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 private:
 	HINSTANCE m_hInst = nullptr;

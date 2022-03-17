@@ -91,8 +91,8 @@ HRESULT DX11Context::StartUp(HWND hWnd)
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
 	::ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
 	swapChainDesc.BufferCount = 1; // 백버퍼 사용 개수(프론트 버퍼 포함 2개)
-	swapChainDesc.BufferDesc.Width = m_pConfig->GetScreenWidth(); // 백버퍼 너비
-	swapChainDesc.BufferDesc.Height = m_pConfig->GetScreenHeight(); // 백퍼버 높이
+	swapChainDesc.BufferDesc.Width = m_pConfig->GetClientWidth(); // 백버퍼 너비
+	swapChainDesc.BufferDesc.Height = m_pConfig->GetClientHeight(); // 백퍼버 높이
 	swapChainDesc.BufferDesc.Format = renderingFormat;
 
 	if (m_pConfig->IsVSYNC())
@@ -113,7 +113,7 @@ HRESULT DX11Context::StartUp(HWND hWnd)
 
 	// 전체 화면일 때만 구분합니다.
 	// 창모드와 전체 창모드는 결국 창모드입니다.
-	EScreenMode screenMode = m_pConfig->GetScreenMode();
+	EScreenMode screenMode = m_pConfig->GetCurrentScreenMode();
 	if (screenMode == EScreenMode::FULLSCREEN)
 	{
 		swapChainDesc.Windowed = FALSE;
@@ -170,8 +170,11 @@ HRESULT DX11Context::StartUp(HWND hWnd)
 void DX11Context::CleanUp()
 {
 	// 종료하기 전에는 항상 창모드로 변경해야 안전하게 해제할 수 있습니다.
-	m_pSwapChain->SetFullscreenState(FALSE, nullptr);
-	
+	if (m_pConfig->GetCurrentScreenMode() == EScreenMode::FULLSCREEN)
+	{
+		m_pSwapChain->SetFullscreenState(FALSE, nullptr);
+	}
+
 	SAFE_RELEASE(m_pRenderTargetView);
 	SAFE_RELEASE(m_pDeviceCtx);
 	SAFE_RELEASE(m_pDevice);

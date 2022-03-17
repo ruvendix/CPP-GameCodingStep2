@@ -2,6 +2,9 @@
 
 #include "PCH.h"
 
+class WindowApp;
+class Config;
+
 class WindowProcedure
 {
 public:
@@ -14,4 +17,11 @@ public:
 	virtual void OnDestroy(HWND hWnd);
 
 	virtual void OnLButtonDown(HWND hWnd, BOOL bDoubleClick, INT32 x, INT32 y, UINT keyFlags);
+
+	void SetConfig(Config* pConfig) { m_pConfig = pConfig; }
+	void SetWindowApp(WindowApp* pWndApp) { m_pWndApp = pWndApp; }
+
+private:
+	WindowApp* m_pWndApp = nullptr;
+	Config* m_pConfig = nullptr;
 };

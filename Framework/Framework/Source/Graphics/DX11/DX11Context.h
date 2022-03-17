@@ -15,6 +15,8 @@ public:
 	void BeginRender();
 	void EndRender();
 
+	IDXGISwapChain* GetSwapChain() { return m_pSwapChain; }
+
 private:
 	Graphics* m_pGFX = nullptr;
 	Config* m_pConfig = nullptr;

@@ -24,6 +24,8 @@ public:
 	SIZE_T GetVRAM_Size() const { return m_VRAM_size; }
 	void SetVRAM_Size(SIZE_T VRAM_Size) { m_VRAM_size = VRAM_Size; }
 
+	DX11Context* GetContext() { return m_pDX11Ctx; }
+
 private:
 	DX11Context* m_pDX11Ctx = nullptr;
 
