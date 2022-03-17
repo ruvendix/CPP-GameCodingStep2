@@ -30,3 +30,10 @@
 *.exe
 *.out
 *.app
+
+# Build
+*.pdb
+
+# Project folder
+/Framework/Intermediate/
+/Framework/.vs
