@@ -115,6 +115,7 @@
     <ClCompile Include="Source\WindowApp\WindowViewer\WindowViewer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\CommonInclude\Enum.h" />
     <ClInclude Include="Source\CommonInclude\Macro.h" />
     <ClInclude Include="Source\Config\Config.h" />
     <ClInclude Include="Source\ErrorHandler\ErrorHandler.h" />

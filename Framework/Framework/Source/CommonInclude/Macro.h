@@ -51,3 +51,5 @@ public:\
 	std::wstring _w##str(wsz);\
 	std::string str;\
 	str.assign(_w##str.begin(), _w##str.end());
+
+#define TOGGLE_ENUM(value, Type) value = static_cast<Type>(!(static_cast<UINT>(value)))

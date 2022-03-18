@@ -1,6 +1,7 @@
 #pragma once
 
 #include "PCH.h"
+#include "CommonInclude/Enum.h"
 
 class WindowApp;
 class Config;
@@ -8,8 +9,8 @@ class Config;
 class WindowProcedure
 {
 public:
-	WindowProcedure() = default;
-	virtual ~WindowProcedure() = default;
+	WindowProcedure();
+	virtual ~WindowProcedure();
 
 	LRESULT CALLBACK CallWindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -24,4 +25,6 @@ public:
 private:
 	WindowApp* m_pWndApp = nullptr;
 	Config* m_pConfig = nullptr;
+
+	EAltTabState m_altTabState = EAltTabState::NORMAL;
 };

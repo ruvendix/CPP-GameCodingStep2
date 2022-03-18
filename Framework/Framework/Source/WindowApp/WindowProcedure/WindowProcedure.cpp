@@ -6,28 +6,67 @@
 
 #include "ErrorHandler/ErrorHandler.h"
 
-LRESULT WindowProcedure::CallWindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+WindowProcedure::WindowProcedure()
 {
-	// 메시지 크래커 스위치입니다.
+	
+}
+
+WindowProcedure::~WindowProcedure()
+{
+	
+}
+
+LRESULT CALLBACK WindowProcedure::CallWindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	// 메시지 크래커 분기입니다.
 	switch (msg)
 	{
 		HANDLE_MSG(hWnd, WM_CREATE, OnCreate);
 		HANDLE_MSG(hWnd, WM_DESTROY, OnDestroy);
 		HANDLE_MSG(hWnd, WM_LBUTTONDOWN, OnLButtonDown);
 
-	case WM_SYSKEYDOWN:
+	case WM_SETFOCUS:
+	{
+		::OutputDebugString("WM_SETFOCUS!\n");
+		if (m_altTabState == EAltTabState::MINIMIZE)
 		{
-			if (((HIWORD(lParam) & KF_ALTDOWN)) &&
-				(wParam == VK_RETURN))				
-			{
-				m_pWndApp->ToggleScreenMode();
-			}
-			break;
+			::OutputDebugString("WM_SETFOCUS! Alt Tab 동작!\n");
+			TOGGLE_ENUM(m_altTabState, EAltTabState);
+			m_pWndApp->ToggleAltTabState(m_altTabState);
 		}
+
+		break;
+	}
+
+	case WM_KILLFOCUS:
+	{
+		::OutputDebugString("WM_KILLFOCUS!\n");
+		if (m_altTabState == EAltTabState::NORMAL)
+		{
+			::OutputDebugString("WM_KILLFOCUS! Alt Tab 동작!\n");
+			TOGGLE_ENUM(m_altTabState, EAltTabState);
+			m_pWndApp->ToggleAltTabState(m_altTabState);
+		}
+
+		break;
+	}
+
+	case WM_SYSKEYDOWN:
+	{
+		if ((HIWORD(lParam) & KF_ALTDOWN) &&
+			(wParam == VK_RETURN))
+		{
+			m_pWndApp->ToggleScreenMode();
+		}
+
+		break;
+	}
 
 	case WM_SIZE:
 	{
 		::SetWindowPos(hWnd, nullptr, 0, 0, m_pConfig->GetClientWidth(), m_pConfig->GetClientHeight(), SWP_SHOWWINDOW);
+		::ShowWindow(hWnd, SW_SHOW);
+
 		break;
 	}
 	}

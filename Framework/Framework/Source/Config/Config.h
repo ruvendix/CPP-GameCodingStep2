@@ -2,7 +2,7 @@
 
 #include "CommonInclude/Macro.h"
 
-enum class EScreenMode
+enum class EScreenMode : UINT
 {
 	WINDOW = 0,
 	FULLSCREEN,

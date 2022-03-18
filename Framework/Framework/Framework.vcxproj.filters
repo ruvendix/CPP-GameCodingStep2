@@ -75,5 +75,6 @@
     <ClInclude Include="Source\Graphics\Graphics.h" />
     <ClInclude Include="Source\Graphics\DX11\DX11Context.h" />
     <ClInclude Include="Source\Config\Config.h" />
+    <ClInclude Include="Source\CommonInclude\Enum.h" />
   </ItemGroup>
 </Project>

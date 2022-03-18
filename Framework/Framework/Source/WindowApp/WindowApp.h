@@ -1,6 +1,7 @@
 #pragma once
 
 #include "PCH.h"
+#include "CommonInclude/Enum.h"
 
 class WindowViewer;
 class WindowProcedure;
@@ -9,6 +10,8 @@ class Config;
 class WindowApp
 {
 public:
+	static LRESULT CALLBACK TossWindowMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 	WindowApp(HINSTANCE hInst, const std::string& strWndClassName);
 	~WindowApp();
 
@@ -18,10 +21,8 @@ public:
 	void CleanUp();
 
 	void Do();
-
 	void ToggleScreenMode();
-
-	static LRESULT CALLBACK TossWindowMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+	void ToggleAltTabState(EAltTabState altTabState);
 
 private:
 	HINSTANCE m_hInst = nullptr;

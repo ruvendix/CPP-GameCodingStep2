@@ -12,6 +12,44 @@
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 #endif
 
+/*
+윈도우 메시지를 넘겨주는 함수입니다.
+*/
+LRESULT WindowApp::TossWindowMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	/*
+	저장한 사용자 정의 정보를 가져옵니다.
+	각 객체마다 저장한 정보는 다르고 윈도우 핸들값은 중복되지 않습니다.
+	*/
+	WindowProcedure* pWndProcedure = nullptr;
+
+	/*
+	WM_CREATE 정보에는 전달한 사용자 정의 정보가 있습니다.
+	해당 정보를 가져온 후, 메모리에 저장해둡니다.
+	*/
+	if (msg == WM_CREATE)
+	{
+		CREATESTRUCT* pCreateStruct = reinterpret_cast<CREATESTRUCT*>(lParam);
+		assert(pCreateStruct != nullptr);
+		pWndProcedure = reinterpret_cast<WindowProcedure*>(pCreateStruct->lpCreateParams);
+		::SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pWndProcedure));
+	}
+	else
+	{
+		pWndProcedure = reinterpret_cast<WindowProcedure*>(::GetWindowLongPtr(hWnd, GWLP_USERDATA));
+
+		// WM_CREATE 이전에는 nullptr 고정입니다.
+		// 이때는 메시지를 운영체제에게 보냅니다.
+		if (pWndProcedure == nullptr)
+		{
+			// 기본 메시지 핸들러를 이용합니다.
+			return ::DefWindowProc(hWnd, msg, wParam, lParam);
+		}
+	}
+
+	return pWndProcedure->CallWindowProcedure(hWnd, msg, wParam, lParam);
+}
+
 WindowApp::WindowApp(HINSTANCE hInst, const std::string& strWndClassName) :
 	m_hInst(hInst),
 	m_strWndClassName(strWndClassName)
@@ -21,7 +59,7 @@ WindowApp::WindowApp(HINSTANCE hInst, const std::string& strWndClassName) :
 
 WindowApp::~WindowApp()
 {
-
+	
 }
 
 int WindowApp::Run()
@@ -77,7 +115,7 @@ HRESULT WindowApp::StartUp()
 	m_pConfig = new Config;
 	m_pConfig->SetScreenWidth(screenWidth);
 	m_pConfig->SetScreenHeight(screenHeight);
-	m_pConfig->SetCurrentScreenMode(EScreenMode::FULLSCREEN);
+	m_pConfig->SetCurrentScreenMode(EScreenMode::FULLSCREEN_WINDOW);
 	m_pConfig->SetClientWidth(1600);
 	m_pConfig->SetClientHeight(1200);
 	m_pConfig->SetVSYNC(true);
@@ -176,11 +214,18 @@ void WindowApp::ToggleScreenMode()
 	m_pConfig->SetSwapScreenMode(tempScreenMode);
 
 	DX11Context* pCtx = SINGLETON(Graphics).GetContext();
+	if (pCtx->GetSwapChain() == nullptr)
+	{
+		return;
+	}
 
 	switch (swapScreenMode)
 	{
 	case EScreenMode::WINDOW: // 모니터 해상도는 윈도우에 설정한 값이지만 창 해상도는 설정했던 값으로 변경하는 경우
 	{
+		::SetWindowLong(m_pWndViewer->GetWindowHandle(), GWL_STYLE, WS_OVERLAPPEDWINDOW);
+		::ShowWindow(m_pWndViewer->GetWindowHandle(), SW_SHOW);
+
 		m_pConfig->ChangeDeviceResolution(m_pConfig->GetScreenWidth(), m_pConfig->GetScreenHeight());
 		pCtx->GetSwapChain()->SetFullscreenState(FALSE, nullptr);
 
@@ -189,7 +234,6 @@ void WindowApp::ToggleScreenMode()
 
 	case EScreenMode::FULLSCREEN_WINDOW: // 모니터 해상도와 창 해상도를 일치시키는 경우
 	{
-		::SetWindowLong(m_pWndViewer->GetWindowHandle(), GWL_STYLE, WS_OVERLAPPEDWINDOW);
 		m_pConfig->ChangeDeviceResolution(m_pConfig->GetClientWidth(), m_pConfig->GetClientHeight());
 		pCtx->GetSwapChain()->SetFullscreenState(FALSE, nullptr);
 
@@ -203,44 +247,35 @@ void WindowApp::ToggleScreenMode()
 
 		break;
 	}
-
 	}
 }
 
-/*
-윈도우 메시지를 넘겨주는 함수입니다.
-*/
-LRESULT WindowApp::TossWindowMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+void WindowApp::ToggleAltTabState(EAltTabState altTabState)
 {
-	/*
-	저장한 사용자 정의 정보를 가져옵니다.
-	각 객체마다 저장한 정보는 다르고 윈도우 핸들값은 중복되지 않습니다.
-	*/
-	WindowProcedure* pWndProcedure = nullptr;
-
-	/*
-	WM_CREATE 정보에는 전달한 사용자 정의 정보가 있습니다.
-	해당 정보를 가져온 후, 메모리에 저장해둡니다.
-	*/
-	if (msg == WM_CREATE)
+	EScreenMode screenMode = m_pConfig->GetCurrentScreenMode();
+	if (screenMode != EScreenMode::FULLSCREEN)
 	{
-		CREATESTRUCT* pCreateStruct = reinterpret_cast<CREATESTRUCT*>(lParam);
-		assert(pCreateStruct != nullptr);
-		pWndProcedure = reinterpret_cast<WindowProcedure*>(pCreateStruct->lpCreateParams);
-		::SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pWndProcedure));
+		return;
+	}
+
+	if (altTabState == EAltTabState::MINIMIZE)
+	{
+		::OutputDebugString("최소화시킴\n");
+		::SetWindowLong(m_pWndViewer->GetWindowHandle(), GWL_STYLE, WS_MINIMIZE);
+		::ShowWindow(m_pWndViewer->GetWindowHandle(), SW_SHOW);
 	}
 	else
 	{
-		pWndProcedure = reinterpret_cast<WindowProcedure*>(::GetWindowLongPtr(hWnd, GWLP_USERDATA));
+		::SetWindowLong(m_pWndViewer->GetWindowHandle(), GWL_STYLE, WS_POPUP);
+		::ShowWindow(m_pWndViewer->GetWindowHandle(), SW_SHOW);
 
-		// WM_CREATE 이전에는 nullptr 고정입니다.
-		// 이때는 메시지를 운영체제에게 보냅니다.
-		if (pWndProcedure == nullptr)
+		m_pConfig->ChangeDeviceResolution(m_pConfig->GetClientWidth(), m_pConfig->GetClientHeight());
+
+		DX11Context* pCtx = SINGLETON(Graphics).GetContext();
+		if (pCtx->GetSwapChain() == nullptr)
 		{
-			// 기본 메시지 핸들러를 이용합니다.
-			return ::DefWindowProc(hWnd, msg, wParam, lParam);
+			return;
 		}
+		pCtx->GetSwapChain()->SetFullscreenState(TRUE, nullptr);
 	}
-
-	return pWndProcedure->CallWindowProcedure(hWnd, msg, wParam, lParam);
 }
