@@ -170,13 +170,13 @@ HRESULT WindowApp::StartUp()
 		return E_FAIL;
 	}
 
-	m_spGFX = std::make_shared<Graphics>();
-	if (FAILED(m_spGFX->StartUp(hWnd, m_spConfig.get())))
+	m_spGfx = std::make_shared<Graphics>();
+	if (FAILED(m_spGfx->StartUp(hWnd, m_spConfig.get())))
 	{
 		return E_FAIL;
 	}
 
-	m_spScene = std::make_shared<Scene>("MainScene", m_spGFX.get());
+	m_spScene = std::make_shared<Scene>("MainScene", m_spGfx.get());
 	m_spScene->StartUp();
 
 	return S_OK;
@@ -185,7 +185,7 @@ HRESULT WindowApp::StartUp()
 void WindowApp::CleanUp()
 {
 	m_spScene->CleanUp();
-	m_spGFX->CleanUp();
+	m_spGfx->CleanUp();
 
 	if (m_spConfig->GetCurrentScreenMode() != EScreenMode::WINDOW)
 	{
@@ -204,11 +204,11 @@ void WindowApp::Do()
 {
 	m_spScene->Update();
 
-	m_spGFX->BeginRender();
+	m_spGfx->BeginRender();
 	{
 		m_spScene->Render();
 	}
-	m_spGFX->EndRender();
+	m_spGfx->EndRender();
 }
 
 void WindowApp::ToggleScreenMode()
@@ -220,7 +220,7 @@ void WindowApp::ToggleScreenMode()
 	m_spConfig->SetCurrentScreenMode(swapScreenMode);
 	m_spConfig->SetAltEnterScreenMode(tempScreenMode);
 
-	DX11Context* pCtx = m_spGFX->GetContext();
+	DX11Context* pCtx = m_spGfx->GetContext();
 	if (pCtx->GetSwapChain() == nullptr)
 	{
 		return;
@@ -250,6 +250,8 @@ void WindowApp::ToggleScreenMode()
 	case EScreenMode::FULLSCREEN: // 설정한 해상도를 전체 화면으로 설정하는 경우
 	{
 		m_spConfig->ChangeDeviceResolution(m_spConfig->GetClientWidth(), m_spConfig->GetClientHeight());
+
+		pCtx->RefreshSwapChain();
 		pCtx->GetSwapChain()->SetFullscreenState(TRUE, nullptr);
 
 		break;
@@ -278,7 +280,7 @@ void WindowApp::ToggleAltTabState(bool bAltTabMinimize)
 
 		m_spConfig->ChangeDeviceResolution(m_spConfig->GetClientWidth(), m_spConfig->GetClientHeight());
 
-		DX11Context* pCtx = m_spGFX->GetContext();
+		DX11Context* pCtx = m_spGfx->GetContext();
 		if (pCtx->GetSwapChain() == nullptr)
 		{
 			return;

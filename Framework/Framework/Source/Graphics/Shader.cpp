@@ -2,8 +2,6 @@
 #include "Shader.h"
 
 #include "ErrorHandler/ErrorHandler.h"
-#include "Graphics/Graphics.h"
-#include "Graphics/DX11/DX11Context.h"
 
 Shader::Shader(const std::wstring& wstrFileName, EShaderType shaderType) :
 	m_wstrFileName(wstrFileName)
@@ -27,7 +25,7 @@ void Shader::LoadShader()
 		// cso 파일이 없다면 직접 컴파일
 		std::wstring wstrShaderPath = L"Shader/" + m_wstrFileName + L".hlsl";
 		if (FAILED(D3DCompileFromFile(
-			wstrShaderPath.c_str(), // hlsls 파일 경로
+			wstrShaderPath.c_str(), // hlsl 파일 경로
 			nullptr, // 매크로 사용하지 않음
 			nullptr, // 포함할 게 없음
 			strEntryPoint.c_str(), // 진입점 이름
@@ -49,7 +47,7 @@ void Shader::LoadShader()
 	}
 }
 
-const char* Shader::FindShaderTarget(EShaderType shaderType)
+const char* Shader::FindShaderTarget(EShaderType shaderType) const
 {
 	switch (shaderType)
 	{

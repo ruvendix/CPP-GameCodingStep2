@@ -61,14 +61,12 @@ void DX11ContextInside::InitSwapChainDesc(HWND hWnd, const DXGI_RATIONAL& refres
 }
 
 ///////////////////////////////////////////////////////////////////
-DX11Context::DX11Context(Graphics* pGFX, Config* pConfig)
+DX11Context::DX11Context(Graphics* pGfx, Config* pConfig)
 {
-	m_pGFX = pGFX;
+	m_pGfx = pGfx;
 	m_pConfig = pConfig;
 
-	//m_clearColor = DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
-	::ZeroMemory(&m_clearColor, sizeof(DirectX::XMFLOAT4));
-
+	m_clearColor = DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
 	m_spInside = std::make_shared<DX11ContextInside>(this);
 }
 
@@ -118,6 +116,13 @@ HRESULT DX11Context::StartUp(HWND hWnd)
 	m_spDeviceCtx->OMSetRenderTargets(1, m_spRenderTargetView.GetAddressOf(), nullptr);
 #pragma endregion
 
+	// 뷰포트는 래스터라이저 단계이므로 픽셀 셰이더 단계 이후로 넘어가려면 필수 설정 대상입니다!
+	D3D11_VIEWPORT viewPort;
+	::ZeroMemory(&viewPort, sizeof(D3D11_VIEWPORT));
+	viewPort.Width = static_cast<float>(m_pConfig->GetClientWidth());
+	viewPort.Height = static_cast<float>(m_pConfig->GetClientHeight());
+	m_spDeviceCtx->RSSetViewports(1, &viewPort);
+
 	return S_OK;
 }
 
@@ -132,7 +137,7 @@ void DX11Context::CleanUp()
 
 void DX11Context::BeginRender()
 {
-	m_spDeviceCtx->ClearRenderTargetView(m_spRenderTargetView.Get(), reinterpret_cast<FLOAT*>(&m_clearColor));
+	m_spDeviceCtx->ClearRenderTargetView(m_spRenderTargetView.Get(), reinterpret_cast<float*>(&m_clearColor));
 }
 
 void DX11Context::EndRender()
@@ -145,4 +150,20 @@ void DX11Context::EndRender()
 	{
 		m_spSwapChain->Present(0, 0); // 최대한 빠르게 갱신합니다.
 	}
+}
+
+void DX11Context::RefreshSwapChain()
+{
+	DXGI_MODE_DESC desc;
+	::ZeroMemory(&desc, sizeof(DXGI_MODE_DESC));
+	desc.Width = m_pConfig->GetClientWidth();
+	desc.Height = m_pConfig->GetClientHeight();
+	desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+	DXGI_RATIONAL refreshRate;
+	m_spAdpater->FindValidRefeshRate(desc.Width, desc.Height, refreshRate);
+	desc.RefreshRate.Denominator = refreshRate.Denominator;
+	desc.RefreshRate.Numerator = refreshRate.Numerator;
+
+	m_spSwapChain->ResizeTarget(&desc);
 }

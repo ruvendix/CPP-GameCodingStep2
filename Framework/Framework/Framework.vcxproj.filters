@@ -67,7 +67,22 @@
     <ClCompile Include="Source\Scene\Scene.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\DX11\Resource\Shader.cpp">
+    <ClCompile Include="Source\Graphics\Shader.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\DX11\Resource\DX11InputLayout.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\DX11\Resource\DX11VertexShader.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\DX11\Resource\DX11VertexLayout.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\DX11\Resource\DX11VertexBuffer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\DX11\Resource\DX11PixelShader.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -106,9 +121,15 @@
       <Filter>Source\CommonInclude</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene\Scene.h" />
-    <ClInclude Include="Source\Graphics\DX11\Resource\Shader.h" />
+    <ClInclude Include="Source\Graphics\Shader.h" />
+    <ClInclude Include="Source\Graphics\DX11\Resource\DX11InputLayout.h" />
+    <ClInclude Include="Source\Graphics\DX11\Resource\DX11VertexShader.h" />
+    <ClInclude Include="Source\Graphics\DX11\Resource\DX11VertexLayout.h" />
+    <ClInclude Include="Source\Graphics\DX11\Resource\DX11VertexBuffer.h" />
+    <ClInclude Include="Source\Graphics\DX11\Resource\DX11PixelShader.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\DefaultVS.hlsl" />
+    <FxCompile Include="Shader\DefaultPS.hlsl" />
   </ItemGroup>
 </Project>

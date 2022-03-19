@@ -19,7 +19,9 @@ public:
 
 	void LoadShader();
 
-	const char* FindShaderTarget(EShaderType shaderType);
+	const char* FindShaderTarget(EShaderType shaderType) const;
+
+	ID3DBlob* GetBlob() const { return m_spBlob.Get(); }
 
 private:
 	std::wstring m_wstrFileName;
