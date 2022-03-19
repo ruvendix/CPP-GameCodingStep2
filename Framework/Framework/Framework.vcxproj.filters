@@ -67,6 +67,9 @@
     <ClCompile Include="Source\Scene\Scene.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphics\DX11\Resource\Shader.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\WindowApp\WindowViewer\WindowViewer.h">
@@ -103,5 +106,9 @@
       <Filter>Source\CommonInclude</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene\Scene.h" />
+    <ClInclude Include="Source\Graphics\DX11\Resource\Shader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shader\DefaultVS.hlsl" />
   </ItemGroup>
 </Project>

@@ -101,6 +101,7 @@
     <ClCompile Include="Source\ErrorHandler\ErrorHandler.cpp" />
     <ClCompile Include="Source\Graphics\DX11\DX11Adapter.cpp" />
     <ClCompile Include="Source\Graphics\DX11\DX11Context.cpp" />
+    <ClCompile Include="Source\Graphics\DX11\Resource\Shader.cpp" />
     <ClCompile Include="Source\Graphics\Graphics.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\PCH\PCH.cpp">
@@ -123,12 +124,22 @@
     <ClInclude Include="Source\ErrorHandler\ErrorHandler.h" />
     <ClInclude Include="Source\Graphics\DX11\DX11Adapter.h" />
     <ClInclude Include="Source\Graphics\DX11\DX11Context.h" />
+    <ClInclude Include="Source\Graphics\DX11\Resource\Shader.h" />
     <ClInclude Include="Source\Graphics\Graphics.h" />
     <ClInclude Include="Source\PCH\PCH.h" />
     <ClInclude Include="Source\Scene\Scene.h" />
     <ClInclude Include="Source\WindowApp\WindowProcedure\WindowProcedure.h" />
     <ClInclude Include="Source\WindowApp\WindowApp.h" />
     <ClInclude Include="Source\WindowApp\WindowViewer\WindowViewer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shader\DefaultVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DefaultVS</EntryPointName>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

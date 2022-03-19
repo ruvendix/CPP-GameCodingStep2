@@ -3,16 +3,18 @@
 
 #include "Graphics/Graphics.h"
 #include "Graphics/DX11/DX11Context.h"
+#include "Graphics/DX11/Resource/Shader.h"
 
-Scene::Scene(const std::string& strName) :
+Scene::Scene(const std::string& strName, Graphics* pGFX) :
 	m_strName(strName)
 {
-	
+	m_pGFX = pGFX;
 }
 
 void Scene::StartUp()
 {
-
+	m_pShader = new Shader(L"DefaultVS", EShaderType::VERTEX_SHADER);
+	m_pShader->LoadShader();
 }
 
 void Scene::CleanUp()
@@ -25,7 +27,7 @@ void Scene::Update()
 
 }
 
-void Scene::Render(Graphics* pGFX)
+void Scene::Render()
 {
 	static std::default_random_engine randomEngine;
 	std::uniform_real_distribution<FLOAT> randNum(0.0f);
@@ -60,6 +62,6 @@ void Scene::Render(Graphics* pGFX)
 			clearColor.z = 0.0f;
 		}
 
-		pGFX->GetContext()->SetClearColor(clearColor);
+		m_pGFX->GetContext()->SetClearColor(clearColor);
 	}
 }

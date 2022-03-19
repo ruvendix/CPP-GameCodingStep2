@@ -170,13 +170,13 @@ HRESULT WindowApp::StartUp()
 		return E_FAIL;
 	}
 
-	m_spGraphics = std::make_shared<Graphics>();
-	if (FAILED(m_spGraphics->StartUp(hWnd, m_spConfig.get())))
+	m_spGFX = std::make_shared<Graphics>();
+	if (FAILED(m_spGFX->StartUp(hWnd, m_spConfig.get())))
 	{
 		return E_FAIL;
 	}
 
-	m_spScene = std::make_shared<Scene>("MainScene");
+	m_spScene = std::make_shared<Scene>("MainScene", m_spGFX.get());
 	m_spScene->StartUp();
 
 	return S_OK;
@@ -185,7 +185,7 @@ HRESULT WindowApp::StartUp()
 void WindowApp::CleanUp()
 {
 	m_spScene->CleanUp();
-	m_spGraphics->CleanUp();
+	m_spGFX->CleanUp();
 
 	if (m_spConfig->GetCurrentScreenMode() != EScreenMode::WINDOW)
 	{
@@ -204,11 +204,11 @@ void WindowApp::Do()
 {
 	m_spScene->Update();
 
-	m_spGraphics->BeginRender();
+	m_spGFX->BeginRender();
 	{
-		m_spScene->Render(m_spGraphics.get());
+		m_spScene->Render();
 	}
-	m_spGraphics->EndRender();
+	m_spGFX->EndRender();
 }
 
 void WindowApp::ToggleScreenMode()
@@ -220,7 +220,7 @@ void WindowApp::ToggleScreenMode()
 	m_spConfig->SetCurrentScreenMode(swapScreenMode);
 	m_spConfig->SetAltEnterScreenMode(tempScreenMode);
 
-	DX11Context* pCtx = m_spGraphics->GetContext();
+	DX11Context* pCtx = m_spGFX->GetContext();
 	if (pCtx->GetSwapChain() == nullptr)
 	{
 		return;
@@ -278,7 +278,7 @@ void WindowApp::ToggleAltTabState(bool bAltTabMinimize)
 
 		m_spConfig->ChangeDeviceResolution(m_spConfig->GetClientWidth(), m_spConfig->GetClientHeight());
 
-		DX11Context* pCtx = m_spGraphics->GetContext();
+		DX11Context* pCtx = m_spGFX->GetContext();
 		if (pCtx->GetSwapChain() == nullptr)
 		{
 			return;
