@@ -84,3 +84,8 @@ void DX11Adapter::FindValidRefeshRate(UINT clientWidth, UINT clientHeight, DXGI_
 		}
 	}
 }
+
+void DX11Adapter::FindGraphicCardName(UINT adapterIdx, std::wstring& refWstrGraphicCardName)
+{
+	refWstrGraphicCardName = m_vecAdapterInfo[adapterIdx].adapterDesc.Description;
+}

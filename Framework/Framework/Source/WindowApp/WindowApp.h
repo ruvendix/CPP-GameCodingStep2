@@ -7,6 +7,7 @@ class WindowViewer;
 class WindowProcedure;
 class Config;
 class Graphics;
+class Scene;
 
 class WindowApp
 {
@@ -38,4 +39,6 @@ private:
 	std::shared_ptr<Graphics> m_spGraphics;
 
 	bool m_bRun = true;
+
+	std::shared_ptr<Scene> m_spScene;
 };

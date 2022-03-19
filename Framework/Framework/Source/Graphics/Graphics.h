@@ -14,7 +14,8 @@ public:
 	HRESULT StartUp(HWND hWnd, Config* pConfig);
 	void CleanUp();
 
-	void Render();
+	void BeginRender();
+	void EndRender();
 
 	DX11Context* GetContext() { return m_spDX11Ctx.get(); }
 

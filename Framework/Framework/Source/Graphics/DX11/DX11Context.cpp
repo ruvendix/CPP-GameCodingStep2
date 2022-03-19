@@ -132,37 +132,6 @@ void DX11Context::CleanUp()
 
 void DX11Context::BeginRender()
 {
-	static std::default_random_engine randomEngine;
-	std::uniform_real_distribution<FLOAT> randNum(0.0f);
-
-	static DWORD dwLocalTime = ::timeGetTime();
-	static DWORD elapsedTime = 0;
-	elapsedTime += (::timeGetTime() - dwLocalTime);
-	dwLocalTime = ::timeGetTime();
-
-	if (elapsedTime > 1000)
-	{
-		elapsedTime = 0;
-
-		m_clearColor.x += randNum(randomEngine);
-		if (m_clearColor.x > 1.0f)
-		{
-			m_clearColor.x = 0.0f;
-		}
-
-		m_clearColor.y += randNum(randomEngine);
-		if (m_clearColor.y > 1.0f)
-		{
-			m_clearColor.y = 0.0f;
-		}
-
-		m_clearColor.z += randNum(randomEngine);
-		if (m_clearColor.z > 1.0f)
-		{
-			m_clearColor.z = 0.0f;
-		}
-	}
-
 	m_spDeviceCtx->ClearRenderTargetView(m_spRenderTargetView.Get(), reinterpret_cast<FLOAT*>(&m_clearColor));
 }
 

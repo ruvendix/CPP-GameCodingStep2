@@ -20,6 +20,8 @@ public:
 	void BeginRender();
 	void EndRender();
 
+	void SetClearColor(const DirectX::XMFLOAT4 clearColor) { m_clearColor = clearColor; }
+
 	Microsoft::WRL::ComPtr<IDXGISwapChain> GetSwapChain() { return m_spSwapChain; }
 
 private:
@@ -35,5 +37,4 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_spRenderTargetView;
 
 	DirectX::XMFLOAT4 m_clearColor;
-
 };

@@ -22,6 +22,7 @@ public:
 	HRESULT StartUp();
 
 	void FindValidRefeshRate(UINT clientWidth, UINT clientHeight, DXGI_RATIONAL& refRefreshRate);
+	void FindGraphicCardName(UINT adapterIdx, std::wstring& refWstrGraphicCardName);
 
 private:
 	std::vector<AdapterInfo> m_vecAdapterInfo;

@@ -111,6 +111,7 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)PCH_$(Configuration).pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)PCH_$(Configuration).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
+    <ClCompile Include="Source\Scene\Scene.cpp" />
     <ClCompile Include="Source\WindowApp\WindowApp.cpp" />
     <ClCompile Include="Source\WindowApp\WindowProcedure\WindowProcedure.cpp" />
     <ClCompile Include="Source\WindowApp\WindowViewer\WindowViewer.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="Source\Graphics\DX11\DX11Context.h" />
     <ClInclude Include="Source\Graphics\Graphics.h" />
     <ClInclude Include="Source\PCH\PCH.h" />
+    <ClInclude Include="Source\Scene\Scene.h" />
     <ClInclude Include="Source\WindowApp\WindowProcedure\WindowProcedure.h" />
     <ClInclude Include="Source\WindowApp\WindowApp.h" />
     <ClInclude Include="Source\WindowApp\WindowViewer\WindowViewer.h" />

@@ -64,6 +64,9 @@
     <ClCompile Include="Source\Graphics\Graphics.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene\Scene.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\WindowApp\WindowViewer\WindowViewer.h">
@@ -99,5 +102,6 @@
     <ClInclude Include="Source\CommonInclude\Enum.h">
       <Filter>Source\CommonInclude</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scene\Scene.h" />
   </ItemGroup>
 </Project>

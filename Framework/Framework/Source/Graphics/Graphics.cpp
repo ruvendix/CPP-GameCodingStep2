@@ -14,11 +14,12 @@ void Graphics::CleanUp()
 	m_spDX11Ctx->CleanUp();
 }
 
-void Graphics::Render()
+void Graphics::BeginRender()
 {
 	m_spDX11Ctx->BeginRender();
-	{
-		// TODO 렌더링 코드 작성
-	}
+}
+
+void Graphics::EndRender()
+{
 	m_spDX11Ctx->EndRender();
 }

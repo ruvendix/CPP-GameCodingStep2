@@ -7,6 +7,7 @@
 #include "Config/Config.h"
 #include "Graphics/Graphics.h"
 #include "Graphics/DX11/DX11Context.h"
+#include "Scene/Scene.h"
 
 #ifdef _DEBUG
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
@@ -175,11 +176,15 @@ HRESULT WindowApp::StartUp()
 		return E_FAIL;
 	}
 
+	m_spScene = std::make_shared<Scene>("MainScene");
+	m_spScene->StartUp();
+
 	return S_OK;
 }
 
 void WindowApp::CleanUp()
 {
+	m_spScene->CleanUp();
 	m_spGraphics->CleanUp();
 
 	if (m_spConfig->GetCurrentScreenMode() != EScreenMode::WINDOW)
@@ -197,7 +202,13 @@ void WindowApp::CleanUp()
 
 void WindowApp::Do()
 {
-	m_spGraphics->Render();
+	m_spScene->Update();
+
+	m_spGraphics->BeginRender();
+	{
+		m_spScene->Render(m_spGraphics.get());
+	}
+	m_spGraphics->EndRender();
 }
 
 void WindowApp::ToggleScreenMode()
