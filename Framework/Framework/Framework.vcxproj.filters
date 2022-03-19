@@ -23,6 +23,15 @@
     <Filter Include="Source\ErrorHandler">
       <UniqueIdentifier>{7d039388-03dc-4077-8c33-5c4874371f2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Config">
+      <UniqueIdentifier>{ce08333c-e08d-46d1-aafb-4f61e6b4ed75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics">
+      <UniqueIdentifier>{9941586d-846f-46f7-ab2f-372298fa6420}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics\DX11">
+      <UniqueIdentifier>{a7ff3367-86e3-40c3-95a0-154471781fdd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -43,14 +52,17 @@
     <ClCompile Include="Source\ErrorHandler\ErrorHandler.cpp">
       <Filter>Source\ErrorHandler</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\Graphics.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Source\Config\Config.cpp">
+      <Filter>Source\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\DX11\DX11Adapter.cpp">
+      <Filter>Source\Graphics\DX11</Filter>
     </ClCompile>
     <ClCompile Include="Source\Graphics\DX11\DX11Context.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Graphics\DX11</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Config\Config.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Source\Graphics\Graphics.cpp">
+      <Filter>Source\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -72,9 +84,20 @@
     <ClInclude Include="Source\ErrorHandler\ErrorHandler.h">
       <Filter>Source\ErrorHandler</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphics\Graphics.h" />
-    <ClInclude Include="Source\Graphics\DX11\DX11Context.h" />
-    <ClInclude Include="Source\Config\Config.h" />
-    <ClInclude Include="Source\CommonInclude\Enum.h" />
+    <ClInclude Include="Source\Config\Config.h">
+      <Filter>Source\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\DX11\DX11Adapter.h">
+      <Filter>Source\Graphics\DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\DX11\DX11Context.h">
+      <Filter>Source\Graphics\DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Graphics.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CommonInclude\Enum.h">
+      <Filter>Source\CommonInclude</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

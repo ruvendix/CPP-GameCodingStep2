@@ -99,6 +99,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Config\Config.cpp" />
     <ClCompile Include="Source\ErrorHandler\ErrorHandler.cpp" />
+    <ClCompile Include="Source\Graphics\DX11\DX11Adapter.cpp" />
     <ClCompile Include="Source\Graphics\DX11\DX11Context.cpp" />
     <ClCompile Include="Source\Graphics\Graphics.cpp" />
     <ClCompile Include="Source\Main.cpp" />
@@ -119,6 +120,7 @@
     <ClInclude Include="Source\CommonInclude\Macro.h" />
     <ClInclude Include="Source\Config\Config.h" />
     <ClInclude Include="Source\ErrorHandler\ErrorHandler.h" />
+    <ClInclude Include="Source\Graphics\DX11\DX11Adapter.h" />
     <ClInclude Include="Source\Graphics\DX11\DX11Context.h" />
     <ClInclude Include="Source\Graphics\Graphics.h" />
     <ClInclude Include="Source\PCH\PCH.h" />

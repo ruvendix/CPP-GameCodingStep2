@@ -24,51 +24,10 @@ LRESULT CALLBACK WindowProcedure::CallWindowProcedure(HWND hWnd, UINT msg, WPARA
 		HANDLE_MSG(hWnd, WM_CREATE, OnCreate);
 		HANDLE_MSG(hWnd, WM_DESTROY, OnDestroy);
 		HANDLE_MSG(hWnd, WM_LBUTTONDOWN, OnLButtonDown);
-
-	case WM_SETFOCUS:
-	{
-		::OutputDebugString("WM_SETFOCUS!\n");
-		if (m_altTabState == EAltTabState::MINIMIZE)
-		{
-			::OutputDebugString("WM_SETFOCUS! Alt Tab 동작!\n");
-			TOGGLE_ENUM(m_altTabState, EAltTabState);
-			m_pWndApp->ToggleAltTabState(m_altTabState);
-		}
-
-		break;
-	}
-
-	case WM_KILLFOCUS:
-	{
-		::OutputDebugString("WM_KILLFOCUS!\n");
-		if (m_altTabState == EAltTabState::NORMAL)
-		{
-			::OutputDebugString("WM_KILLFOCUS! Alt Tab 동작!\n");
-			TOGGLE_ENUM(m_altTabState, EAltTabState);
-			m_pWndApp->ToggleAltTabState(m_altTabState);
-		}
-
-		break;
-	}
-
-	case WM_SYSKEYDOWN:
-	{
-		if ((HIWORD(lParam) & KF_ALTDOWN) &&
-			(wParam == VK_RETURN))
-		{
-			m_pWndApp->ToggleScreenMode();
-		}
-
-		break;
-	}
-
-	case WM_SIZE:
-	{
-		::SetWindowPos(hWnd, nullptr, 0, 0, m_pConfig->GetClientWidth(), m_pConfig->GetClientHeight(), SWP_SHOWWINDOW);
-		::ShowWindow(hWnd, SW_SHOW);
-
-		break;
-	}
+		HANDLE_MSG(hWnd, WM_SETFOCUS, OnSetFocus);
+		HANDLE_MSG(hWnd, WM_KILLFOCUS, OnKillFocus);
+		HANDLE_MSG(hWnd, WM_SYSKEYDOWN, OnSysKeyDown);
+		HANDLE_MSG(hWnd, WM_SIZE, OnSize);
 	}
 
 	// 대부분의 메시지는 운영체제에게 보냅니다.
@@ -86,7 +45,40 @@ void WindowProcedure::OnDestroy(HWND hWnd)
 	::PostQuitMessage(EXIT_SUCCESS);
 }
 
+void WindowProcedure::OnSetFocus(HWND hWnd, HWND hOldFoucsWnd)
+{
+	if (m_bAltTabMinimize == true)
+	{
+		m_bAltTabMinimize = !m_bAltTabMinimize;
+		m_pWndApp->ToggleAltTabState(m_bAltTabMinimize);
+	}
+}
+
+void WindowProcedure::OnKillFocus(HWND hWnd, HWND hNewFocusWnd)
+{
+	if (m_bAltTabMinimize == false)
+	{
+		m_bAltTabMinimize = !m_bAltTabMinimize;
+		m_pWndApp->ToggleAltTabState(m_bAltTabMinimize);
+	}
+}
+
 void WindowProcedure::OnLButtonDown(HWND hWnd, BOOL bDoubleClick, INT32 x, INT32 y, UINT keyFlags)
 {
-	::MessageBox(hWnd, "Good", "What", MB_OK);
+	
+}
+
+void WindowProcedure::OnSysKeyDown(HWND hWnd, UINT virtualKeyCode, BOOL bKeyDown, int repeat, UINT flags)
+{
+	if ((flags & KF_ALTDOWN) &&
+		(virtualKeyCode == VK_RETURN))
+	{
+		m_pWndApp->ToggleScreenMode();
+	}
+}
+
+void WindowProcedure::OnSize(HWND hWnd, UINT state, int width, int height)
+{
+	::SetWindowPos(hWnd, nullptr, 0, 0, m_pConfig->GetClientWidth(), m_pConfig->GetClientHeight(), SWP_SHOWWINDOW);
+	::ShowWindow(hWnd, SW_SHOW);
 }

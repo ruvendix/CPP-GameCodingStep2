@@ -19,6 +19,8 @@
 #include <comdef.h>
 #include <timeapi.h>
 
+#include <wrl/client.h>
+
 #pragma comment(lib, "winmm.lib")
 #pragma endregion
 
@@ -33,4 +35,5 @@
 
 #pragma region 프로젝트_전용
 #include "CommonInclude/Macro.h"
+#include "CommonInclude/Enum.h"
 #pragma endregion

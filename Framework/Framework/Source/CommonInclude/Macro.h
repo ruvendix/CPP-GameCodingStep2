@@ -1,26 +1,5 @@
 #pragma once
 
-#define SAFE_DELETE(ptr)\
-	if (ptr != nullptr)\
-	{\
-		delete ptr;\
-		ptr = nullptr;\
-	}
-
-#define SAFE_DELETE_ARRAY(ptr)\
-	if (ptr != nullptr)\
-	{\
-		delete[] ptr;\
-		ptr = nullptr;\
-	}
-
-#define SAFE_RELEASE(ptr)\
-	if (ptr != nullptr)\
-	{\
-		ptr->Release();\
-		ptr = nullptr;\
-	}
-
 #define GENERATE_SINGLETON(Type)\
 public:\
 	static Type& GetInstance()\
@@ -47,9 +26,15 @@ public:\
 		COM_ERROR(hRet);\
 	}
 
-#define WSTRING_TO_STRING(str, wsz)\
-	std::wstring _w##str(wsz);\
-	std::string str;\
-	str.assign(_w##str.begin(), _w##str.end());
+#define OUTSIDE_CLASS(InsideType)\
+friend class InsideType;\
+std::shared_ptr<class InsideType> m_spInside;
 
-#define TOGGLE_ENUM(value, Type) value = static_cast<Type>(!(static_cast<UINT>(value)))
+#define INSIDE_CLASS(OutSideType, InsideType)\
+public:\
+	InsideType(OutSideType* pOutside)\
+	{\
+		m_pOutside = pOutside;\
+	}\
+private:\
+		OutSideType* m_pOutside = nullptr;

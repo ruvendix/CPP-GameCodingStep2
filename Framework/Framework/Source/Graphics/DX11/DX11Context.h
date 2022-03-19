@@ -1,10 +1,15 @@
 #pragma once
 
+#include "PCH.h"
+
 class Config;
 class Graphics;
+class DX11Adapter;
 
 class DX11Context
 {
+	OUTSIDE_CLASS(DX11ContextInside);
+
 public:
 	DX11Context(Graphics* pGFX, Config* pConfig);
 	~DX11Context() = default;
@@ -15,17 +20,20 @@ public:
 	void BeginRender();
 	void EndRender();
 
-	IDXGISwapChain* GetSwapChain() { return m_pSwapChain; }
+	Microsoft::WRL::ComPtr<IDXGISwapChain> GetSwapChain() { return m_spSwapChain; }
 
 private:
 	Graphics* m_pGFX = nullptr;
 	Config* m_pConfig = nullptr;
 
-	IDXGISwapChain* m_pSwapChain = nullptr;
+	std::shared_ptr<DX11Adapter> m_spAdpater;
 
-	ID3D11Device* m_pDevice = nullptr;
-	ID3D11DeviceContext* m_pDeviceCtx = nullptr;
-	ID3D11RenderTargetView* m_pRenderTargetView = nullptr;
+	Microsoft::WRL::ComPtr<IDXGISwapChain> m_spSwapChain;
+
+	Microsoft::WRL::ComPtr<ID3D11Device> m_spDevice;
+	Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_spDeviceCtx;
+	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_spRenderTargetView;
 
 	DirectX::XMFLOAT4 m_clearColor;
+
 };

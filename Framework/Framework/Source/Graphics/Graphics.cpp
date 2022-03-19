@@ -5,21 +5,20 @@
 
 HRESULT Graphics::StartUp(HWND hWnd, Config* pConfig)
 {
-	m_pDX11Ctx = new DX11Context(this, pConfig);
-	return (m_pDX11Ctx->StartUp(hWnd));
+	m_spDX11Ctx = std::make_shared<DX11Context>(this, pConfig);
+	return (m_spDX11Ctx->StartUp(hWnd));
 }
 
 void Graphics::CleanUp()
 {
-	m_pDX11Ctx->CleanUp();
-	SAFE_DELETE(m_pDX11Ctx);
+	m_spDX11Ctx->CleanUp();
 }
 
 void Graphics::Render()
 {
-	m_pDX11Ctx->BeginRender();
+	m_spDX11Ctx->BeginRender();
 	{
 		// TODO 렌더링 코드 작성
 	}
-	m_pDX11Ctx->EndRender();
+	m_spDX11Ctx->EndRender();
 }

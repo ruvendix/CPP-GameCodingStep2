@@ -30,8 +30,8 @@ public:
 	EScreenMode GetCurrentScreenMode() const { return m_currentScreenMode; }
 	void SetCurrentScreenMode(EScreenMode currentScreenMode) { m_currentScreenMode = currentScreenMode; }
 
-	EScreenMode GetSwapScreenMode() const { return m_swapScreenMode; }
-	void SetSwapScreenMode(EScreenMode swapScreenMode) { m_swapScreenMode = swapScreenMode; }
+	EScreenMode GetAltEnterScreenMode() const { return m_altEnterScreenMode; }
+	void SetAltEnterScreenMode(EScreenMode altEnterScreenMode) { m_altEnterScreenMode = altEnterScreenMode; }
 
 	const DEVMODE GetDeviceMode() const { return m_deviceMode; }
 
@@ -48,7 +48,7 @@ private:
 	UINT m_clientHeight = 0;
 
 	EScreenMode m_currentScreenMode = EScreenMode::WINDOW;
-	EScreenMode m_swapScreenMode = EScreenMode::FULLSCREEN; // 기본 전환은 전체 화면
+	EScreenMode m_altEnterScreenMode = EScreenMode::FULLSCREEN; // 기본 전환은 전체 화면
 
 	bool m_bVSYNC = false;
 

@@ -6,6 +6,7 @@
 class WindowViewer;
 class WindowProcedure;
 class Config;
+class Graphics;
 
 class WindowApp
 {
@@ -22,17 +23,19 @@ public:
 
 	void Do();
 	void ToggleScreenMode();
-	void ToggleAltTabState(EAltTabState altTabState);
+	void ToggleAltTabState(bool bAltTabMinimize);
 
 private:
 	HINSTANCE m_hInst = nullptr;
+
 	std::string m_strWndClassName;
 	WNDCLASSEX m_wndClass;
 
-	WindowViewer* m_pWndViewer = nullptr;
-	WindowProcedure* m_pWndProcedure = nullptr;
+	std::shared_ptr<WindowViewer> m_spWndViewer;
+	std::shared_ptr<WindowProcedure> m_spWndProcedure;
 
-	Config* m_pConfig = nullptr;
+	std::shared_ptr<Config> m_spConfig;
+	std::shared_ptr<Graphics> m_spGraphics;
 
 	bool m_bRun = true;
 };
