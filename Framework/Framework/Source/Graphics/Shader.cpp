@@ -60,6 +60,11 @@ const char* Shader::FindShaderTarget(EShaderType shaderType) const
 	{
 		return "ps_5_0";
 	}
+
+	case EShaderType::GEOMETRY_SHADER:
+	{
+		return "gs_5_0";
+	}
 	}
 
 	return nullptr;

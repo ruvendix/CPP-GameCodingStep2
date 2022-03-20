@@ -46,9 +46,9 @@ const char* DX11InputLayout::FindSemantic(ESemanticType semanticType) const
 		return "POSITION";
 	}
 
-	case ESemanticType::COLOR:
+	case ESemanticType::SCALE:
 	{
-		return "COLOR";
+		return "SCALE";
 	}
 	}
 

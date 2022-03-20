@@ -5,7 +5,7 @@
 enum class ESemanticType
 {
 	POSITION = 0,
-	COLOR,
+	SCALE,
 };
 
 class Shader;

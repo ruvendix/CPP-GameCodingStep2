@@ -85,6 +85,9 @@
     <ClCompile Include="Source\Graphics\DX11\Resource\DX11PixelShader.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphics\DX11\Resource\DX11GeometryShader.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\WindowApp\WindowViewer\WindowViewer.h">
@@ -127,9 +130,11 @@
     <ClInclude Include="Source\Graphics\DX11\Resource\DX11VertexLayout.h" />
     <ClInclude Include="Source\Graphics\DX11\Resource\DX11VertexBuffer.h" />
     <ClInclude Include="Source\Graphics\DX11\Resource\DX11PixelShader.h" />
+    <ClInclude Include="Source\Graphics\DX11\Resource\DX11GeometryShader.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\DefaultVS.hlsl" />
     <FxCompile Include="Shader\DefaultPS.hlsl" />
+    <FxCompile Include="Shader\DefaultGS.hlsl" />
   </ItemGroup>
 </Project>

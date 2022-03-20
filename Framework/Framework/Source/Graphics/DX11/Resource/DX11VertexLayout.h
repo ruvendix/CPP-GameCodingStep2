@@ -13,5 +13,18 @@ public:
 	static DX11InputLayout GetInputLayout() { return s_inputLayout; }
 
 	static DX11InputLayout s_inputLayout;
+
 	DirectX::XMFLOAT2 pos;
+};
+
+struct DX11VertexPositionScale
+{
+public:
+	static void GlobalInit(Shader* pVertexShader, Graphics* pGraphics);
+	static DX11InputLayout GetInputLayout() { return s_inputLayout; }
+
+	static DX11InputLayout s_inputLayout;
+
+	DirectX::XMFLOAT2 pos;
+	DirectX::XMFLOAT2 scale;
 };

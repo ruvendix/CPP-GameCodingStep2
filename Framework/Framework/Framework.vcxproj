@@ -101,6 +101,7 @@
     <ClCompile Include="Source\ErrorHandler\ErrorHandler.cpp" />
     <ClCompile Include="Source\Graphics\DX11\DX11Adapter.cpp" />
     <ClCompile Include="Source\Graphics\DX11\DX11Context.cpp" />
+    <ClCompile Include="Source\Graphics\DX11\Resource\DX11GeometryShader.cpp" />
     <ClCompile Include="Source\Graphics\DX11\Resource\DX11InputLayout.cpp" />
     <ClCompile Include="Source\Graphics\DX11\Resource\DX11PixelShader.cpp" />
     <ClCompile Include="Source\Graphics\DX11\Resource\DX11VertexBuffer.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="Source\ErrorHandler\ErrorHandler.h" />
     <ClInclude Include="Source\Graphics\DX11\DX11Adapter.h" />
     <ClInclude Include="Source\Graphics\DX11\DX11Context.h" />
+    <ClInclude Include="Source\Graphics\DX11\Resource\DX11GeometryShader.h" />
     <ClInclude Include="Source\Graphics\DX11\Resource\DX11InputLayout.h" />
     <ClInclude Include="Source\Graphics\DX11\Resource\DX11PixelShader.h" />
     <ClInclude Include="Source\Graphics\DX11\Resource\DX11VertexBuffer.h" />
@@ -143,6 +145,13 @@
     <ClInclude Include="Source\WindowApp\WindowViewer\WindowViewer.h" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Shader\DefaultGS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DefaultGS</EntryPointName>
+    </FxCompile>
     <FxCompile Include="Shader\DefaultPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>

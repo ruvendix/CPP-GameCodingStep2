@@ -5,6 +5,7 @@
 class Graphics;
 class DX11VertexShader;
 class DX11PixelShader;
+class DX11GeometryShader;
 class DX11VertexBuffer;
 
 class Scene
@@ -25,6 +26,7 @@ private:
 	Graphics* m_pGfx = nullptr;
 
 	std::shared_ptr<DX11VertexShader> m_spVertexShader;
+	std::shared_ptr<DX11GeometryShader> m_spGeometryShader;
 	std::shared_ptr<DX11PixelShader> m_spPixelShader;
 	std::shared_ptr<DX11VertexBuffer> m_spVertexBuffer;
 };

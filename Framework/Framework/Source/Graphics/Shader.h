@@ -7,6 +7,7 @@ enum class EShaderType
 	UNKNOWN = 0,
 	VERTEX_SHADER,
 	PIXEL_SHADER,
+	GEOMETRY_SHADER,
 };
 
 class Graphics;
