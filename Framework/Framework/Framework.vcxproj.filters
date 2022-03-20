@@ -32,6 +32,15 @@
     <Filter Include="Source\Graphics\DX11">
       <UniqueIdentifier>{a7ff3367-86e3-40c3-95a0-154471781fdd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Graphics\DX11\Resource">
+      <UniqueIdentifier>{5b9018a3-6ef4-45c9-b7e1-7e69513d896a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Scene">
+      <UniqueIdentifier>{dc7a7b88-e50e-4e13-adf1-dc698df93479}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{f4140f90-9234-487d-8ca6-2ae3d1c1155c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -64,29 +73,29 @@
     <ClCompile Include="Source\Graphics\Graphics.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene\Scene.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics\Shader.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Source\Graphics\DX11\Resource\DX11GeometryShader.cpp">
+      <Filter>Source\Graphics\DX11\Resource</Filter>
     </ClCompile>
     <ClCompile Include="Source\Graphics\DX11\Resource\DX11InputLayout.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics\DX11\Resource\DX11VertexShader.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics\DX11\Resource\DX11VertexLayout.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics\DX11\Resource\DX11VertexBuffer.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Graphics\DX11\Resource</Filter>
     </ClCompile>
     <ClCompile Include="Source\Graphics\DX11\Resource\DX11PixelShader.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Graphics\DX11\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\DX11\Resource\DX11GeometryShader.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Source\Graphics\DX11\Resource\DX11VertexBuffer.cpp">
+      <Filter>Source\Graphics\DX11\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\DX11\Resource\DX11VertexLayout.cpp">
+      <Filter>Source\Graphics\DX11\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\DX11\Resource\DX11VertexShader.cpp">
+      <Filter>Source\Graphics\DX11\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\Scene.cpp">
+      <Filter>Source\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Shader.cpp">
+      <Filter>Source\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -123,18 +132,40 @@
     <ClInclude Include="Source\CommonInclude\Enum.h">
       <Filter>Source\CommonInclude</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene\Scene.h" />
-    <ClInclude Include="Source\Graphics\Shader.h" />
-    <ClInclude Include="Source\Graphics\DX11\Resource\DX11InputLayout.h" />
-    <ClInclude Include="Source\Graphics\DX11\Resource\DX11VertexShader.h" />
-    <ClInclude Include="Source\Graphics\DX11\Resource\DX11VertexLayout.h" />
-    <ClInclude Include="Source\Graphics\DX11\Resource\DX11VertexBuffer.h" />
-    <ClInclude Include="Source\Graphics\DX11\Resource\DX11PixelShader.h" />
-    <ClInclude Include="Source\Graphics\DX11\Resource\DX11GeometryShader.h" />
+    <ClInclude Include="Source\Graphics\DX11\Resource\DX11GeometryShader.h">
+      <Filter>Source\Graphics\DX11\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\DX11\Resource\DX11InputLayout.h">
+      <Filter>Source\Graphics\DX11\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\DX11\Resource\DX11PixelShader.h">
+      <Filter>Source\Graphics\DX11\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\DX11\Resource\DX11VertexBuffer.h">
+      <Filter>Source\Graphics\DX11\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\DX11\Resource\DX11VertexLayout.h">
+      <Filter>Source\Graphics\DX11\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\DX11\Resource\DX11VertexShader.h">
+      <Filter>Source\Graphics\DX11\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\Scene.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Shader.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shader\DefaultVS.hlsl" />
-    <FxCompile Include="Shader\DefaultPS.hlsl" />
-    <FxCompile Include="Shader\DefaultGS.hlsl" />
+    <FxCompile Include="Shader\DefaultGS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\DefaultPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\DefaultVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
