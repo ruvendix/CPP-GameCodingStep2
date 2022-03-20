@@ -20,6 +20,6 @@ void DX11VertexBuffer::CreateVertexBuffer(Graphics* pGfx, UINT stride, void* pVe
 	data.pSysMem = pVertices;
 
 	HRESULT hRet = S_OK;
-	ID3D11Device* pDevice = pGfx->GetContext()->GetDevice();
+	ID3D11Device* pDevice = pGfx->GetContext()->GetNativeDevice();
 	TEST_COM(pDevice->CreateBuffer(&desc, &data, m_spBuffer.GetAddressOf()), hRet);
 }

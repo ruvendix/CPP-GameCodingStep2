@@ -14,17 +14,15 @@ class Graphics;
 class DX11InputLayout
 {
 public:
+	static const char* FindSemantic(ESemanticType semanticType);
+
 	DX11InputLayout() = default;
 	~DX11InputLayout() = default;
 
-	void AddElement(ESemanticType semanticType, DXGI_FORMAT format);
-	void CreateInputLayout(Shader* pVertexShader, Graphics* pGfx);
+	void CreateInputLayout(ID3DBlob* pVertexShaderBlob, Graphics* pGfx, const D3D11_INPUT_ELEMENT_DESC* pDesc, UINT elemCount);
 
-	const char* FindSemantic(ESemanticType semanticType) const;
-
-	ID3D11InputLayout* GetInputLayout() const { return m_spInputLayout.Get(); }
+	ID3D11InputLayout* GetNativeInputLayout() const { return m_spInputLayout.Get(); }
 
 private:
-	std::vector<D3D11_INPUT_ELEMENT_DESC> m_vecDesc;
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_spInputLayout;
 };

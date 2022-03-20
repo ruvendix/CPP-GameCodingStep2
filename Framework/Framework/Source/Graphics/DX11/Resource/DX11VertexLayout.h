@@ -9,10 +9,8 @@ class Graphics;
 struct DX11VertexPosition
 {
 public:
-	static void GlobalInit(Shader* pVertexShader, Graphics* pGraphics);
-	static DX11InputLayout GetInputLayout() { return s_inputLayout; }
-
-	static DX11InputLayout s_inputLayout;
+	static const UINT InputElemCount = 1;
+	static const D3D11_INPUT_ELEMENT_DESC InputElemDesc[InputElemCount];
 
 	DirectX::XMFLOAT2 pos;
 };
@@ -20,10 +18,8 @@ public:
 struct DX11VertexPositionScale
 {
 public:
-	static void GlobalInit(Shader* pVertexShader, Graphics* pGraphics);
-	static DX11InputLayout GetInputLayout() { return s_inputLayout; }
-
-	static DX11InputLayout s_inputLayout;
+	static const UINT InputElemCount = 2;
+	static const D3D11_INPUT_ELEMENT_DESC InputElemDesc[InputElemCount];
 
 	DirectX::XMFLOAT2 pos;
 	DirectX::XMFLOAT2 scale;

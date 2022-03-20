@@ -9,7 +9,7 @@
 void DX11PixelShader::CreatePixelShader(Shader* pPixelShader, Graphics* pGfx)
 {
 	HRESULT hRet = S_OK;
-	ID3D11Device* pDevice = pGfx->GetContext()->GetDevice();
+	ID3D11Device* pDevice = pGfx->GetContext()->GetNativeDevice();
 	ID3DBlob* pBlob = pPixelShader->GetBlob();
 
 	TEST_COM(pDevice->CreatePixelShader(

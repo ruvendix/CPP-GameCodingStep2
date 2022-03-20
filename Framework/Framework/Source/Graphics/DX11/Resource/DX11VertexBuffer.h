@@ -12,7 +12,7 @@ public:
 
 	void CreateVertexBuffer(Graphics* pGfx, UINT stride, void* pVertices, UINT vertexCount);
 
-	ID3D11Buffer* GetBuffer() const { return m_spBuffer.Get(); }
+	ID3D11Buffer* GetNativeBuffer() const { return m_spBuffer.Get(); }
 	UINT GetStride() const { return m_stride; }
 
 private:

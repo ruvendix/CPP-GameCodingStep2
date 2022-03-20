@@ -9,6 +9,7 @@
 #include <random>
 #include <locale>
 #include <codecvt>
+#include <array>
 #pragma endregion
 
 #pragma region Win32API

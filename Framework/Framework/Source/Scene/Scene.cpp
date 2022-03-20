@@ -18,24 +18,31 @@ Scene::Scene(const std::string& strName, Graphics* pGfx) :
 
 void Scene::StartUp()
 {
+#pragma region πˆ≈ÿΩ∫ ºŒ¿Ã¥ı
 	std::shared_ptr<Shader> spVertexShader = std::make_shared<Shader>(L"DefaultVS", EShaderType::VERTEX_SHADER);
 	spVertexShader->LoadShader();
+
+	std::vector<DX11VertexPositionScale> vecVertex;
+	vecVertex.push_back(DX11VertexPositionScale{ DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f) });
+
 	m_spVertexShader = std::make_shared<DX11VertexShader>();
 	m_spVertexShader->CreateVertexShader(spVertexShader.get(), m_pGfx);
-	DX11VertexPositionScale::GlobalInit(spVertexShader.get(), m_pGfx);
+	m_spVertexShader->CreateInputLayout(m_pGfx, DX11VertexPositionScale::InputElemDesc, DX11VertexPositionScale::InputElemCount);
+#pragma endregion
 
+#pragma region «»ºø ºŒ¿Ã¥ı
 	std::shared_ptr<Shader> spPixelShader = std::make_shared<Shader>(L"DefaultPS", EShaderType::PIXEL_SHADER);
 	spPixelShader->LoadShader();
 	m_spPixelShader = std::make_shared<DX11PixelShader>();
 	m_spPixelShader->CreatePixelShader(spPixelShader.get(), m_pGfx);
+#pragma endregion
 
+#pragma region ¡ˆø¿∏ﬁ∆Æ∏Æ ºŒ¿Ã¥ı
 	std::shared_ptr<Shader> spGeometryShader = std::make_shared<Shader>(L"DefaultGS", EShaderType::GEOMETRY_SHADER);
 	spGeometryShader->LoadShader();
 	m_spGeometryShader = std::make_shared<DX11GeometryShader>();
 	m_spGeometryShader->CreateGeometryShader(spGeometryShader.get(), m_pGfx);
-
-	std::vector<DX11VertexPositionScale> vecVertex;
-	vecVertex.push_back(DX11VertexPositionScale{DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f)});
+#pragma endregion
 
 	m_spVertexBuffer = std::make_shared<DX11VertexBuffer>();
 	m_spVertexBuffer->CreateVertexBuffer(m_pGfx, sizeof(DX11VertexPositionScale), vecVertex.data(), vecVertex.size());
@@ -53,19 +60,19 @@ void Scene::Update()
 
 void Scene::Render()
 {
-	ID3D11DeviceContext* pDeviceCtx = m_pGfx->GetContext()->GetDeviceContext();
+	ID3D11DeviceContext* pDeviceCtx = m_pGfx->GetContext()->GetNativeDeviceContext();
 
-	pDeviceCtx->IASetInputLayout(DX11VertexPositionScale::GetInputLayout().GetInputLayout());
+	pDeviceCtx->IASetInputLayout(m_spVertexShader->GetNativeInputLayout());
 	pDeviceCtx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 
-	UINT stride = m_spVertexBuffer->GetStride();
 	UINT offset = 0;
-	ID3D11Buffer* pVertexBuffer = m_spVertexBuffer->GetBuffer();
+	UINT stride = m_spVertexBuffer->GetStride();
+	ID3D11Buffer* pVertexBuffer = m_spVertexBuffer->GetNativeBuffer();
 	pDeviceCtx->IASetVertexBuffers(0, 1, &pVertexBuffer, &stride, &offset);
 
-	pDeviceCtx->VSSetShader(m_spVertexShader->GetVertexShader(), nullptr, 0);
-	pDeviceCtx->GSSetShader(m_spGeometryShader->GetGeometryShader(), nullptr, 0);
-	pDeviceCtx->PSSetShader(m_spPixelShader->GetPixelShader(), nullptr, 0);
+	pDeviceCtx->VSSetShader(m_spVertexShader->GetNativeVertexShader(), nullptr, 0);
+	pDeviceCtx->GSSetShader(m_spGeometryShader->GetNativeGeometryShader(), nullptr, 0);
+	pDeviceCtx->PSSetShader(m_spPixelShader->GetNativePixelShader(), nullptr, 0);
 
 	pDeviceCtx->Draw(1, 0);
 }

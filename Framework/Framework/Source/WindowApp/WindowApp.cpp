@@ -221,7 +221,7 @@ void WindowApp::ToggleScreenMode()
 	m_spConfig->SetAltEnterScreenMode(tempScreenMode);
 
 	DX11Context* pCtx = m_spGfx->GetContext();
-	if (pCtx->GetSwapChain() == nullptr)
+	if (pCtx->GetNativeSwapChain() == nullptr)
 	{
 		return;
 	}
@@ -234,7 +234,7 @@ void WindowApp::ToggleScreenMode()
 		::ShowWindow(m_spWndViewer->GetWindowHandle(), SW_SHOW);
 
 		m_spConfig->ChangeDeviceResolution(m_spConfig->GetScreenWidth(), m_spConfig->GetScreenHeight());
-		pCtx->GetSwapChain()->SetFullscreenState(FALSE, nullptr);
+		pCtx->GetNativeSwapChain()->SetFullscreenState(FALSE, nullptr);
 
 		break;
 	}
@@ -242,7 +242,7 @@ void WindowApp::ToggleScreenMode()
 	case EScreenMode::FULLSCREEN_WINDOW: // 모니터 해상도와 창 해상도를 일치시키는 경우
 	{
 		m_spConfig->ChangeDeviceResolution(m_spConfig->GetClientWidth(), m_spConfig->GetClientHeight());
-		pCtx->GetSwapChain()->SetFullscreenState(FALSE, nullptr);
+		pCtx->GetNativeSwapChain()->SetFullscreenState(FALSE, nullptr);
 
 		break;
 	}
@@ -252,7 +252,7 @@ void WindowApp::ToggleScreenMode()
 		m_spConfig->ChangeDeviceResolution(m_spConfig->GetClientWidth(), m_spConfig->GetClientHeight());
 
 		pCtx->RefreshSwapChain();
-		pCtx->GetSwapChain()->SetFullscreenState(TRUE, nullptr);
+		pCtx->GetNativeSwapChain()->SetFullscreenState(TRUE, nullptr);
 
 		break;
 	}
@@ -281,10 +281,10 @@ void WindowApp::ToggleAltTabState(bool bAltTabMinimize)
 		m_spConfig->ChangeDeviceResolution(m_spConfig->GetClientWidth(), m_spConfig->GetClientHeight());
 
 		DX11Context* pCtx = m_spGfx->GetContext();
-		if (pCtx->GetSwapChain() == nullptr)
+		if (pCtx->GetNativeSwapChain() == nullptr)
 		{
 			return;
 		}
-		pCtx->GetSwapChain()->SetFullscreenState(TRUE, nullptr);
+		pCtx->GetNativeSwapChain()->SetFullscreenState(TRUE, nullptr);
 	}
 }

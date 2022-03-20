@@ -12,7 +12,6 @@ Shader::Shader(const std::wstring& wstrFileName, EShaderType shaderType) :
 void Shader::LoadShader()
 {
 	std::wstring wstrShaderCompiledObjectPath = L"../Build/" + m_wstrFileName + L".cso";
-
 	if (FAILED(D3DReadFileToBlob(wstrShaderCompiledObjectPath.c_str(), m_spBlob.GetAddressOf())))
 	{
 		::OutputDebugString("cso 파일 읽기 실패!");

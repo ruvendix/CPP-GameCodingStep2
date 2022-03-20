@@ -24,9 +24,9 @@ public:
 
 	void SetClearColor(const DirectX::XMFLOAT4 clearColor) { m_clearColor = clearColor; }
 
-	IDXGISwapChain* GetSwapChain() const { return m_spSwapChain.Get(); }
-	ID3D11Device* GetDevice() const { return m_spDevice.Get(); }
-	ID3D11DeviceContext* GetDeviceContext() const { return m_spDeviceCtx.Get(); }
+	IDXGISwapChain* GetNativeSwapChain() const { return m_spSwapChain.Get(); }
+	ID3D11Device* GetNativeDevice() const { return m_spDevice.Get(); }
+	ID3D11DeviceContext* GetNativeDeviceContext() const { return m_spDeviceCtx.Get(); }
 
 private:
 	Graphics* m_pGfx = nullptr;

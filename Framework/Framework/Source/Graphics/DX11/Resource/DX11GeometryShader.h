@@ -13,7 +13,7 @@ public:
 
 	void CreateGeometryShader(Shader* pGeometryShader, Graphics* pGfx);
 
-	ID3D11GeometryShader* GetGeometryShader() const { return m_spGeometryShader.Get(); }
+	ID3D11GeometryShader* GetNativeGeometryShader() const { return m_spGeometryShader.Get(); }
 
 private:
 	Microsoft::WRL::ComPtr<ID3D11GeometryShader> m_spGeometryShader;

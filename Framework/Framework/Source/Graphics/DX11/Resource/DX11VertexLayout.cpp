@@ -3,18 +3,15 @@
 
 #include "Graphics/Shader.h"
 #include "Graphics/Graphics.h"
+#include "Graphics/DX11/Resource/DX11InputLayout.h"
 
-DX11InputLayout DX11VertexPosition::s_inputLayout;
-void DX11VertexPosition::GlobalInit(Shader* pVertexShader, Graphics* pGraphics)
+const D3D11_INPUT_ELEMENT_DESC DX11VertexPosition::InputElemDesc[] =
 {
-	s_inputLayout.AddElement(ESemanticType::POSITION, DXGI_FORMAT_R32G32_FLOAT);
-	s_inputLayout.CreateInputLayout(pVertexShader, pGraphics);
-}
+	{ DX11InputLayout::FindSemantic(ESemanticType::POSITION), 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+};
 
-DX11InputLayout DX11VertexPositionScale::s_inputLayout;
-void DX11VertexPositionScale::GlobalInit(Shader* pVertexShader, Graphics* pGraphics)
+const D3D11_INPUT_ELEMENT_DESC DX11VertexPositionScale::InputElemDesc[] =
 {
-	s_inputLayout.AddElement(ESemanticType::POSITION, DXGI_FORMAT_R32G32_FLOAT);
-	s_inputLayout.AddElement(ESemanticType::SCALE, DXGI_FORMAT_R32G32_FLOAT);
-	s_inputLayout.CreateInputLayout(pVertexShader, pGraphics);
-}
+	{ DX11InputLayout::FindSemantic(ESemanticType::POSITION), 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ DX11InputLayout::FindSemantic(ESemanticType::SCALE), 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+};
