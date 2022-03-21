@@ -27,6 +27,9 @@ public:
 	UINT GetClientHeight() const { return m_clientHeight; }
 	void SetClientHeight(UINT clientHeight) { m_clientHeight = clientHeight; }
 
+	UINT GetWindowWidth() const { return m_windowWidth; }
+	UINT GetWindowHeight() const { return m_windowHeight; }
+
 	EScreenMode GetCurrentScreenMode() const { return m_currentScreenMode; }
 	void SetCurrentScreenMode(EScreenMode currentScreenMode) { m_currentScreenMode = currentScreenMode; }
 
@@ -39,6 +42,7 @@ public:
 	void SetVSYNC(bool bVSYNC) { m_bVSYNC = bVSYNC; }
 
 	void ChangeDeviceResolution(UINT width, UINT height);
+	void AdjustWindowRect(DWORD dwStyle, DWORD dwExStyle);
 
 private:
 	UINT m_screenWidth = 0;
@@ -46,6 +50,12 @@ private:
 
 	UINT m_clientWidth = 0;
 	UINT m_clientHeight = 0;
+
+	UINT m_windowWidth = 0;
+	UINT m_windowHeight = 0;
+
+	UINT m_prevWindowWidth = 0;
+	UINT m_prevWindowHeight = 0;
 
 	EScreenMode m_currentScreenMode = EScreenMode::WINDOW;
 	EScreenMode m_altEnterScreenMode = EScreenMode::FULLSCREEN; // 기본 전환은 전체 화면

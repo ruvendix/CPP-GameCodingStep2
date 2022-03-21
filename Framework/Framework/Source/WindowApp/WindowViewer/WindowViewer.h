@@ -9,9 +9,10 @@ struct WindowCreateInfo
 	std::string strWndClassName;
 	int x = 0;
 	int y = 0;
-	UINT clientWidth = 0;
-	UINT clientHeight = 0;
+	UINT windowWidth = 0;
+	UINT windowHeight = 0;
 	DWORD dwStyle = 0;
+	DWORD dwExStyle = 0;
 	HINSTANCE hInst = nullptr;
 	WindowProcedure* pWndProcedure = nullptr;
 };

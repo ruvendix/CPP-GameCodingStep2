@@ -22,12 +22,14 @@ LRESULT CALLBACK WindowProcedure::CallWindowProcedure(HWND hWnd, UINT msg, WPARA
 	switch (msg)
 	{
 		HANDLE_MSG(hWnd, WM_CREATE, OnCreate);
+		HANDLE_MSG(hWnd, WM_WINDOWPOSCHANGING, OnWindowPosChanging);
+
 		HANDLE_MSG(hWnd, WM_DESTROY, OnDestroy);
 		HANDLE_MSG(hWnd, WM_LBUTTONDOWN, OnLButtonDown);
 		HANDLE_MSG(hWnd, WM_SETFOCUS, OnSetFocus);
 		HANDLE_MSG(hWnd, WM_KILLFOCUS, OnKillFocus);
 		HANDLE_MSG(hWnd, WM_SYSKEYDOWN, OnSysKeyDown);
-		HANDLE_MSG(hWnd, WM_SIZE, OnSize);
+		HANDLE_MSG(hWnd, WM_SYSKEYUP, OnSysKeyUp);
 	}
 
 	// 대부분의 메시지는 운영체제에게 보냅니다.
@@ -75,10 +77,24 @@ void WindowProcedure::OnSysKeyDown(HWND hWnd, UINT virtualKeyCode, BOOL bKeyDown
 	{
 		m_pWndApp->ToggleScreenMode();
 	}
+
+	if ((flags & KF_ALTDOWN) &&
+		(virtualKeyCode == VK_RIGHT))
+	{
+		::OutputDebugString("테스트!\n");
+		::SetWindowPos(hWnd, nullptr, 0, 0, 1622, 1256, SWP_SHOWWINDOW);
+	}
 }
 
-void WindowProcedure::OnSize(HWND hWnd, UINT state, int width, int height)
+void WindowProcedure::OnSysKeyUp(HWND hwnd, UINT virtualKeyCode, BOOL bKeyDown, int repeat, UINT flags)
 {
-	::SetWindowPos(hWnd, nullptr, 0, 0, m_pConfig->GetClientWidth(), m_pConfig->GetClientHeight(), SWP_SHOWWINDOW);
-	::ShowWindow(hWnd, SW_SHOW);
+
+}
+
+BOOL WindowProcedure::OnWindowPosChanging(HWND hWnd, LPWINDOWPOS lpwpos)
+{
+	lpwpos->cx = m_pConfig->GetWindowWidth();
+	lpwpos->cy = m_pConfig->GetWindowHeight();
+
+	return TRUE;
 }

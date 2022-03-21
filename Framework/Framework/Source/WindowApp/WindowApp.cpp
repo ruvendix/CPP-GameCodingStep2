@@ -107,6 +107,7 @@ HRESULT WindowApp::StartUp()
 
 	if (::RegisterClassEx(&m_wndClass) == 0)
 	{
+		COM_ERROR(::GetLastError());
 		return E_FAIL;
 	}
 
@@ -128,33 +129,24 @@ HRESULT WindowApp::StartUp()
 	}
 
 	WindowCreateInfo wndCreateInfo;
-	wndCreateInfo.clientWidth = m_spConfig->GetClientWidth();
-	wndCreateInfo.clientHeight = m_spConfig->GetClientHeight();
 	wndCreateInfo.strWndClassName = m_strWndClassName;
 	wndCreateInfo.hInst = m_hInst;
+	wndCreateInfo.dwExStyle = WS_EX_TOPMOST | WS_EX_APPWINDOW;
 
-	switch (m_spConfig->GetCurrentScreenMode())
+	EScreenMode screenMode = m_spConfig->GetCurrentScreenMode();
+	if (screenMode == EScreenMode::WINDOW)
 	{
-	case EScreenMode::WINDOW:
-	{
-		wndCreateInfo.x = static_cast<int>((screenWidth - wndCreateInfo.clientWidth) * 0.5f);
-		wndCreateInfo.y = static_cast<int>((screenHeight - wndCreateInfo.clientHeight) * 0.5f);
 		wndCreateInfo.dwStyle = WS_OVERLAPPEDWINDOW;
-
-		break;
 	}
-
-	case EScreenMode::FULLSCREEN:
-	case EScreenMode::FULLSCREEN_WINDOW:
+	else
 	{
-		wndCreateInfo.x = 0;
-		wndCreateInfo.y = 0;
-		wndCreateInfo.dwStyle = WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP;
-
-		m_spConfig->ChangeDeviceResolution(wndCreateInfo.clientWidth, wndCreateInfo.clientHeight);
-		break;
-	}		
+		wndCreateInfo.dwStyle = WS_POPUP;
+		m_spConfig->ChangeDeviceResolution(wndCreateInfo.windowWidth, wndCreateInfo.windowHeight);
 	}
+	m_spConfig->AdjustWindowRect(wndCreateInfo.dwStyle, wndCreateInfo.dwExStyle);
+
+	wndCreateInfo.windowWidth = m_spConfig->GetWindowWidth();
+	wndCreateInfo.windowHeight = m_spConfig->GetWindowHeight();
 
 	m_spWndProcedure = std::make_shared<WindowProcedure>();
 	m_spWndProcedure->SetConfig(m_spConfig.get());
@@ -170,6 +162,9 @@ HRESULT WindowApp::StartUp()
 		return E_FAIL;
 	}
 
+	HRESULT hRet = S_OK;
+	TEST_COM(CoInitialize(nullptr), hRet); // COM 사용하기 전에 호출!
+	
 	m_spGfx = std::make_shared<Graphics>();
 	if (FAILED(m_spGfx->StartUp(hWnd, m_spConfig.get())))
 	{
@@ -186,6 +181,8 @@ void WindowApp::CleanUp()
 {
 	m_spScene->CleanUp();
 	m_spGfx->CleanUp();
+
+	CoUninitialize(); // COM 사용이 끝났으면 호출!
 
 	if (m_spConfig->GetCurrentScreenMode() != EScreenMode::WINDOW)
 	{
@@ -215,9 +212,9 @@ void WindowApp::ToggleScreenMode()
 {
 	// 현재 화면 모드와 (Alt + Enter) 모드를 바꾸면서 적용
 	EScreenMode tempScreenMode = m_spConfig->GetCurrentScreenMode();
-	EScreenMode swapScreenMode = m_spConfig->GetAltEnterScreenMode();
+	EScreenMode altEnterScreenMode = m_spConfig->GetAltEnterScreenMode();
 
-	m_spConfig->SetCurrentScreenMode(swapScreenMode);
+	m_spConfig->SetCurrentScreenMode(altEnterScreenMode);
 	m_spConfig->SetAltEnterScreenMode(tempScreenMode);
 
 	DX11Context* pCtx = m_spGfx->GetContext();
@@ -226,11 +223,11 @@ void WindowApp::ToggleScreenMode()
 		return;
 	}
 
-	switch (swapScreenMode)
+	switch (altEnterScreenMode)
 	{
 	case EScreenMode::WINDOW: // 모니터 해상도는 윈도우에 설정한 값이지만 창 해상도는 설정했던 값으로 변경하는 경우
 	{
-		::SetWindowLong(m_spWndViewer->GetWindowHandle(), GWL_STYLE, WS_OVERLAPPEDWINDOW);
+		::SetWindowLongPtr(m_spWndViewer->GetWindowHandle(), GWL_STYLE, WS_OVERLAPPEDWINDOW);
 		::ShowWindow(m_spWndViewer->GetWindowHandle(), SW_SHOW);
 
 		m_spConfig->ChangeDeviceResolution(m_spConfig->GetScreenWidth(), m_spConfig->GetScreenHeight());
@@ -270,12 +267,12 @@ void WindowApp::ToggleAltTabState(bool bAltTabMinimize)
 	if (bAltTabMinimize == true)
 	{
 		::OutputDebugString("최소화시킴\n");
-		::SetWindowLong(m_spWndViewer->GetWindowHandle(), GWL_STYLE, WS_MINIMIZE);
+		::SetWindowLongPtr(m_spWndViewer->GetWindowHandle(), GWL_STYLE, WS_MINIMIZE);
 		::ShowWindow(m_spWndViewer->GetWindowHandle(), SW_SHOW);
 	}
 	else
 	{
-		::SetWindowLong(m_spWndViewer->GetWindowHandle(), GWL_STYLE, WS_POPUP);
+		::SetWindowLongPtr(m_spWndViewer->GetWindowHandle(), GWL_STYLE, WS_POPUP);
 		::ShowWindow(m_spWndViewer->GetWindowHandle(), SW_SHOW);
 
 		m_spConfig->ChangeDeviceResolution(m_spConfig->GetClientWidth(), m_spConfig->GetClientHeight());
