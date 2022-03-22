@@ -66,7 +66,7 @@ DX11Context::DX11Context(Graphics* pGfx, Config* pConfig)
 	m_pGfx = pGfx;
 	m_pConfig = pConfig;
 
-	m_clearColor = DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+	m_clearColor = DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
 	m_spInside = std::make_shared<DX11ContextInside>(this);
 }
 

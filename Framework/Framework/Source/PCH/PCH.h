@@ -38,6 +38,12 @@
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma endregion
 
+#pragma region External
+#include "DirectXTex/DirectXTex/DirectXTex.h"
+
+#pragma comment(lib, "DirectXTex.lib")
+#pragma endregion
+
 #pragma region 프로젝트_전용
 #include "CommonInclude/Macro.h"
 #include "CommonInclude/Enum.h"

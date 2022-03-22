@@ -6,7 +6,7 @@ struct VS_Input
 
 struct VS_Output
 {
-	float4 pos : POSITION;
+    float4 pos : POSITION;
     float2 scale : SCALE;
 };
 

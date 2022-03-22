@@ -29,4 +29,8 @@ private:
 	std::shared_ptr<DX11GeometryShader> m_spGeometryShader;
 	std::shared_ptr<DX11PixelShader> m_spPixelShader;
 	std::shared_ptr<DX11VertexBuffer> m_spVertexBuffer;
+
+	// 일단은 되는지 테스트
+	Microsoft::WRL::ComPtr<ID3D11SamplerState> m_spSamplerState;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_spTex;
 };

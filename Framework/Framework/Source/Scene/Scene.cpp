@@ -1,6 +1,8 @@
 #include "PCH.h"
 #include "Scene.h"
 
+#include "ErrorHandler/ErrorHandler.h"
+
 #include "Graphics/Shader.h"
 #include "Graphics/Graphics.h"
 #include "Graphics/DX11/DX11Context.h"
@@ -23,7 +25,7 @@ void Scene::StartUp()
 	spVertexShader->LoadShader();
 
 	std::vector<DX11VertexPositionScale> vecVertex;
-	vecVertex.push_back(DX11VertexPositionScale{ DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f) });
+	vecVertex.push_back(DX11VertexPositionScale{ DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 1.25f) });
 
 	m_spVertexShader = std::make_shared<DX11VertexShader>();
 	m_spVertexShader->CreateVertexShader(spVertexShader.get(), m_pGfx);
@@ -46,6 +48,18 @@ void Scene::StartUp()
 
 	m_spVertexBuffer = std::make_shared<DX11VertexBuffer>();
 	m_spVertexBuffer->CreateVertexBuffer(m_pGfx, sizeof(DX11VertexPositionScale), vecVertex.data(), vecVertex.size());
+
+	D3D11_SAMPLER_DESC samplerDesc;
+	::ZeroMemory(&samplerDesc, sizeof(D3D11_SAMPLER_DESC));
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	m_pGfx->GetContext()->GetNativeDevice()->CreateSamplerState(&samplerDesc, m_spSamplerState.GetAddressOf());
+
+	HRESULT hRet = S_OK;
+	DirectX::ScratchImage image;
+	DirectX::TexMetadata metadata;
+	TEST_COM(DirectX::LoadFromWICFile(L"Textures/KirbyTitle.jpg", DirectX::WIC_FLAGS_NONE, &metadata, image), hRet); // ¾ËÆÄºí·»µå ¸Ô¿©¾ß ¾ËÆÄ°¡ »ç¶óÁü
+	TEST_COM(DirectX::CreateShaderResourceView(m_pGfx->GetContext()->GetNativeDevice(), image.GetImages(), image.GetImageCount(), metadata, m_spTex.GetAddressOf()), hRet);
 }
 
 void Scene::CleanUp()
@@ -73,6 +87,27 @@ void Scene::Render()
 	pDeviceCtx->VSSetShader(m_spVertexShader->GetNativeVertexShader(), nullptr, 0);
 	pDeviceCtx->GSSetShader(m_spGeometryShader->GetNativeGeometryShader(), nullptr, 0);
 	pDeviceCtx->PSSetShader(m_spPixelShader->GetNativePixelShader(), nullptr, 0);
+
+	pDeviceCtx->PSSetSamplers(0, 1, m_spSamplerState.GetAddressOf());
+	pDeviceCtx->PSSetShaderResources(0, 1, m_spTex.GetAddressOf());
+
+	D3D11_BLEND_DESC desc;
+	::ZeroMemory(&desc, sizeof(D3D11_BLEND_DESC));
+	desc.AlphaToCoverageEnable = TRUE;
+	desc.RenderTarget[0].BlendEnable = TRUE;
+	desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	desc.RenderTarget[0].RenderTargetWriteMask = 0x0f;
+
+	Microsoft::WRL::ComPtr<ID3D11BlendState> spBS;
+	m_pGfx->GetContext()->GetNativeDevice()->CreateBlendState(&desc, spBS.GetAddressOf());
+
+	float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	pDeviceCtx->OMSetBlendState(spBS.Get(), blendFactor, 0xffffffff);
 
 	pDeviceCtx->Draw(1, 0);
 }
