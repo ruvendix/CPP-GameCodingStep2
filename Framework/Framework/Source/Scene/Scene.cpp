@@ -11,6 +11,7 @@
 #include "Graphics/DX11/Resource/DX11GeometryShader.h"
 #include "Graphics/DX11/Resource/DX11VertexLayout.h"
 #include "Graphics/DX11/Resource/DX11VertexBuffer.h"
+#include "Graphics/DX11/Resource/DX11Texture2D.h"
 
 Scene::Scene(const std::string& strName, Graphics* pGfx) :
 	m_strName(strName)
@@ -55,11 +56,8 @@ void Scene::StartUp()
 	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	m_pGfx->GetContext()->GetNativeDevice()->CreateSamplerState(&samplerDesc, m_spSamplerState.GetAddressOf());
 
-	HRESULT hRet = S_OK;
-	DirectX::ScratchImage image;
-	DirectX::TexMetadata metadata;
-	TEST_COM(DirectX::LoadFromWICFile(L"Textures/KirbyTitle.jpg", DirectX::WIC_FLAGS_NONE, &metadata, image), hRet); // ¾ËÆÄºí·»µå ¸Ô¿©¾ß ¾ËÆÄ°¡ »ç¶óÁü
-	TEST_COM(DirectX::CreateShaderResourceView(m_pGfx->GetContext()->GetNativeDevice(), image.GetImages(), image.GetImageCount(), metadata, m_spTex.GetAddressOf()), hRet);
+	m_spTex2D = std::make_shared<DX11Texture2D>();
+	m_spTex2D->LoadTexture(L"Textures/KirbyTitle.jpg", m_pGfx);
 }
 
 void Scene::CleanUp()
@@ -89,7 +87,7 @@ void Scene::Render()
 	pDeviceCtx->PSSetShader(m_spPixelShader->GetNativePixelShader(), nullptr, 0);
 
 	pDeviceCtx->PSSetSamplers(0, 1, m_spSamplerState.GetAddressOf());
-	pDeviceCtx->PSSetShaderResources(0, 1, m_spTex.GetAddressOf());
+	pDeviceCtx->PSSetShaderResources(0, 1, m_spTex2D->GetNativeShaderResourceViewAddress());
 
 	D3D11_BLEND_DESC desc;
 	::ZeroMemory(&desc, sizeof(D3D11_BLEND_DESC));

@@ -97,6 +97,9 @@
     <ClCompile Include="Source\Graphics\Shader.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphics\DX11\Resource\DX11Texture2D.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\WindowApp\WindowViewer\WindowViewer.h">
@@ -153,7 +156,10 @@
     <ClInclude Include="Source\Graphics\Shader.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\CommonInclude\Struct.h" />
+    <ClInclude Include="Source\CommonInclude\Struct.h">
+      <Filter>Source\CommonInclude</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\DX11\Resource\DX11Texture2D.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\DefaultGS.hlsl">

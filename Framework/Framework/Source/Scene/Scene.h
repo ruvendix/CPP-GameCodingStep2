@@ -7,6 +7,7 @@ class DX11VertexShader;
 class DX11PixelShader;
 class DX11GeometryShader;
 class DX11VertexBuffer;
+class DX11Texture2D;
 
 class Scene
 {
@@ -29,8 +30,8 @@ private:
 	std::shared_ptr<DX11GeometryShader> m_spGeometryShader;
 	std::shared_ptr<DX11PixelShader> m_spPixelShader;
 	std::shared_ptr<DX11VertexBuffer> m_spVertexBuffer;
+	std::shared_ptr<DX11Texture2D> m_spTex2D;
 
 	// 일단은 되는지 테스트
 	Microsoft::WRL::ComPtr<ID3D11SamplerState> m_spSamplerState;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_spTex;
 };

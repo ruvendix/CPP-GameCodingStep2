@@ -106,6 +106,7 @@
     <ClCompile Include="Source\Graphics\DX11\Resource\DX11GeometryShader.cpp" />
     <ClCompile Include="Source\Graphics\DX11\Resource\DX11InputLayout.cpp" />
     <ClCompile Include="Source\Graphics\DX11\Resource\DX11PixelShader.cpp" />
+    <ClCompile Include="Source\Graphics\DX11\Resource\DX11Texture2D.cpp" />
     <ClCompile Include="Source\Graphics\DX11\Resource\DX11VertexBuffer.cpp" />
     <ClCompile Include="Source\Graphics\DX11\Resource\DX11VertexLayout.cpp" />
     <ClCompile Include="Source\Graphics\DX11\Resource\DX11VertexShader.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="Source\Graphics\DX11\Resource\DX11GeometryShader.h" />
     <ClInclude Include="Source\Graphics\DX11\Resource\DX11InputLayout.h" />
     <ClInclude Include="Source\Graphics\DX11\Resource\DX11PixelShader.h" />
+    <ClInclude Include="Source\Graphics\DX11\Resource\DX11Texture2D.h" />
     <ClInclude Include="Source\Graphics\DX11\Resource\DX11VertexBuffer.h" />
     <ClInclude Include="Source\Graphics\DX11\Resource\DX11VertexLayout.h" />
     <ClInclude Include="Source\Graphics\DX11\Resource\DX11VertexShader.h" />
