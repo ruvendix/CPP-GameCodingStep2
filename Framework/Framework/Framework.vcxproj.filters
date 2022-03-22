@@ -129,9 +129,6 @@
     <ClInclude Include="Source\Graphics\Graphics.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\CommonInclude\Enum.h">
-      <Filter>Source\CommonInclude</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Graphics\DX11\Resource\DX11GeometryShader.h">
       <Filter>Source\Graphics\DX11\Resource</Filter>
     </ClInclude>
@@ -156,6 +153,7 @@
     <ClInclude Include="Source\Graphics\Shader.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\CommonInclude\Struct.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\DefaultGS.hlsl">

@@ -46,5 +46,5 @@
 
 #pragma region 프로젝트_전용
 #include "CommonInclude/Macro.h"
-#include "CommonInclude/Enum.h"
+#include "CommonInclude/Struct.h"
 #pragma endregion

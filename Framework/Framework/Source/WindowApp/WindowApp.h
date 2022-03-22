@@ -1,7 +1,6 @@
 #pragma once
 
 #include "PCH.h"
-#include "CommonInclude/Enum.h"
 
 class WindowViewer;
 class WindowProcedure;

@@ -117,7 +117,7 @@ HRESULT WindowApp::StartUp()
 	m_spConfig = std::make_shared<Config>();
 	m_spConfig->SetScreenWidth(screenWidth);
 	m_spConfig->SetScreenHeight(screenHeight);
-	m_spConfig->SetCurrentScreenMode(EScreenMode::WINDOW);
+	m_spConfig->SetCurrentScreenMode(EScreenMode::FULLSCREEN_WINDOW);
 	m_spConfig->SetClientWidth(1600);
 	m_spConfig->SetClientHeight(1200);
 	m_spConfig->SetVSYNC(true);
@@ -141,12 +141,16 @@ HRESULT WindowApp::StartUp()
 	else
 	{
 		wndCreateInfo.dwStyle = WS_POPUP;
-		m_spConfig->ChangeDeviceResolution(wndCreateInfo.windowWidth, wndCreateInfo.windowHeight);
+		m_spConfig->ChangeDeviceResolution(m_spConfig->GetClientWidth(), m_spConfig->GetClientHeight());
 	}
 	m_spConfig->AdjustWindowRect(wndCreateInfo.dwStyle, wndCreateInfo.dwExStyle);
 
 	wndCreateInfo.windowWidth = m_spConfig->GetWindowWidth();
 	wndCreateInfo.windowHeight = m_spConfig->GetWindowHeight();
+
+	wndCreateInfo.windowStartPos.x = static_cast<UINT>((m_spConfig->GetScreenWidth() - wndCreateInfo.windowWidth) * 0.5f);
+	wndCreateInfo.windowStartPos.y = static_cast<UINT>((m_spConfig->GetScreenHeight() - wndCreateInfo.windowHeight) * 0.5f);
+	m_spConfig->SetWindowStartPos(wndCreateInfo.windowStartPos);
 
 	m_spWndProcedure = std::make_shared<WindowProcedure>();
 	m_spWndProcedure->SetConfig(m_spConfig.get());
@@ -230,6 +234,9 @@ void WindowApp::ToggleScreenMode()
 		::SetWindowLongPtr(m_spWndViewer->GetWindowHandle(), GWL_STYLE, WS_OVERLAPPEDWINDOW);
 		::ShowWindow(m_spWndViewer->GetWindowHandle(), SW_SHOW);
 
+		const Position2D& windowStartPos = m_spConfig->GetWindowStartPos();
+		::SetWindowPos(m_spWndViewer->GetWindowHandle(), nullptr, windowStartPos.x, windowStartPos.y, 0, 0, SWP_NOSIZE);
+
 		m_spConfig->ChangeDeviceResolution(m_spConfig->GetScreenWidth(), m_spConfig->GetScreenHeight());
 		pCtx->GetNativeSwapChain()->SetFullscreenState(FALSE, nullptr);
 
@@ -266,7 +273,6 @@ void WindowApp::ToggleAltTabState(bool bAltTabMinimize)
 
 	if (bAltTabMinimize == true)
 	{
-		::OutputDebugString("ÃÖ¼ÒÈ­½ÃÅ´\n");
 		::SetWindowLongPtr(m_spWndViewer->GetWindowHandle(), GWL_STYLE, WS_MINIMIZE);
 		::ShowWindow(m_spWndViewer->GetWindowHandle(), SW_SHOW);
 	}
@@ -278,10 +284,9 @@ void WindowApp::ToggleAltTabState(bool bAltTabMinimize)
 		m_spConfig->ChangeDeviceResolution(m_spConfig->GetClientWidth(), m_spConfig->GetClientHeight());
 
 		DX11Context* pCtx = m_spGfx->GetContext();
-		if (pCtx->GetNativeSwapChain() == nullptr)
-		{
-			return;
-		}
-		pCtx->GetNativeSwapChain()->SetFullscreenState(TRUE, nullptr);
+		ASSERT(pCtx != nullptr);
+		IDXGISwapChain* pSwapChain = pCtx->GetNativeSwapChain();
+		ASSERT(pSwapChain != nullptr);
+		pSwapChain->SetFullscreenState(TRUE, nullptr);
 	}
 }

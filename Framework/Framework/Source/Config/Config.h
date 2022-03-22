@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CommonInclude/Macro.h"
+#include "PCH.h"
 
 enum class EScreenMode : UINT
 {
@@ -30,6 +30,10 @@ public:
 	UINT GetWindowWidth() const { return m_windowWidth; }
 	UINT GetWindowHeight() const { return m_windowHeight; }
 
+	const Position2D& GetWindowStartPos() const { return m_windowStartPos; }
+	void SetWindowStartPos(UINT x, UINT y) { m_windowStartPos = { x, y }; }
+	void SetWindowStartPos(const Position2D& windowStartPos) { m_windowStartPos = windowStartPos; }
+
 	EScreenMode GetCurrentScreenMode() const { return m_currentScreenMode; }
 	void SetCurrentScreenMode(EScreenMode currentScreenMode) { m_currentScreenMode = currentScreenMode; }
 
@@ -54,8 +58,7 @@ private:
 	UINT m_windowWidth = 0;
 	UINT m_windowHeight = 0;
 
-	UINT m_prevWindowWidth = 0;
-	UINT m_prevWindowHeight = 0;
+	Position2D m_windowStartPos;
 
 	EScreenMode m_currentScreenMode = EScreenMode::WINDOW;
 	EScreenMode m_altEnterScreenMode = EScreenMode::FULLSCREEN; // 기본 전환은 전체 화면

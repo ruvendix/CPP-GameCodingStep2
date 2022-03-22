@@ -77,13 +77,6 @@ void WindowProcedure::OnSysKeyDown(HWND hWnd, UINT virtualKeyCode, BOOL bKeyDown
 	{
 		m_pWndApp->ToggleScreenMode();
 	}
-
-	if ((flags & KF_ALTDOWN) &&
-		(virtualKeyCode == VK_RIGHT))
-	{
-		::OutputDebugString("Å×½ºÆ®!\n");
-		::SetWindowPos(hWnd, nullptr, 0, 0, 1622, 1256, SWP_SHOWWINDOW);
-	}
 }
 
 void WindowProcedure::OnSysKeyUp(HWND hwnd, UINT virtualKeyCode, BOOL bKeyDown, int repeat, UINT flags)

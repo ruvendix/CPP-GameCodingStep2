@@ -7,8 +7,7 @@ class WindowProcedure;
 struct WindowCreateInfo
 {
 	std::string strWndClassName;
-	int x = 0;
-	int y = 0;
+	Position2D windowStartPos;
 	UINT windowWidth = 0;
 	UINT windowHeight = 0;
 	DWORD dwStyle = 0;
