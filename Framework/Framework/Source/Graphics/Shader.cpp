@@ -3,14 +3,36 @@
 
 #include "ErrorHandler/ErrorHandler.h"
 
-Shader::Shader(const std::wstring& wstrFileName, EShaderType shaderType) :
-	m_wstrFileName(wstrFileName)
+const char* Shader::FindShaderTarget(EShaderType shaderType)
 {
-	m_shaderType = shaderType;
+	switch (shaderType)
+	{
+	case EShaderType::VERTEX_SHADER:
+	{
+		return "vs_5_0";
+	}
+
+	case EShaderType::PIXEL_SHADER:
+	{
+		return "ps_5_0";
+	}
+
+	case EShaderType::GEOMETRY_SHADER:
+	{
+		return "gs_5_0";
+	}
+	}
+
+	return nullptr;
 }
 
-void Shader::LoadShader()
+void Shader::LoadShader(const std::wstring& wstrFileName, EShaderType shaderType)
 {
+	m_spBlob.Reset();
+
+	m_wstrFileName = wstrFileName;
+	m_shaderType = shaderType;
+
 	std::wstring wstrShaderCompiledObjectPath = L"../Build/" + m_wstrFileName + L".cso";
 	if (FAILED(D3DReadFileToBlob(wstrShaderCompiledObjectPath.c_str(), m_spBlob.GetAddressOf())))
 	{
@@ -44,27 +66,4 @@ void Shader::LoadShader()
 			}
 		}
 	}
-}
-
-const char* Shader::FindShaderTarget(EShaderType shaderType) const
-{
-	switch (shaderType)
-	{
-	case EShaderType::VERTEX_SHADER:
-	{
-		return "vs_5_0";
-	}
-
-	case EShaderType::PIXEL_SHADER:
-	{
-		return "ps_5_0";
-	}
-
-	case EShaderType::GEOMETRY_SHADER:
-	{
-		return "gs_5_0";
-	}
-	}
-
-	return nullptr;
 }

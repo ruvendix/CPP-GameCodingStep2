@@ -117,7 +117,7 @@ HRESULT WindowApp::StartUp()
 	m_spConfig = std::make_shared<Config>();
 	m_spConfig->SetScreenWidth(screenWidth);
 	m_spConfig->SetScreenHeight(screenHeight);
-	m_spConfig->SetCurrentScreenMode(EScreenMode::FULLSCREEN_WINDOW);
+	m_spConfig->SetCurrentScreenMode(EScreenMode::WINDOW);
 	m_spConfig->SetClientWidth(1600);
 	m_spConfig->SetClientHeight(1200);
 	m_spConfig->SetVSYNC(true);

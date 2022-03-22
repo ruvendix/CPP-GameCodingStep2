@@ -15,12 +15,12 @@ class Graphics;
 class Shader
 {
 public:
-	Shader(const std::wstring& wstrFileName, EShaderType shaderType);
+	static const char* FindShaderTarget(EShaderType shaderType);
+
+	Shader() = default;
 	~Shader() = default;
 
-	void LoadShader();
-
-	const char* FindShaderTarget(EShaderType shaderType) const;
+	void LoadShader(const std::wstring& wstrFileName, EShaderType shaderType);
 
 	ID3DBlob* GetBlob() const { return m_spBlob.Get(); }
 

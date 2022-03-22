@@ -22,8 +22,8 @@ Scene::Scene(const std::string& strName, Graphics* pGfx) :
 void Scene::StartUp()
 {
 #pragma region πˆ≈ÿΩ∫ ºŒ¿Ã¥ı
-	std::shared_ptr<Shader> spVertexShader = std::make_shared<Shader>(L"DefaultVS", EShaderType::VERTEX_SHADER);
-	spVertexShader->LoadShader();
+	std::shared_ptr<Shader> spVertexShader = std::make_shared<Shader>();
+	spVertexShader->LoadShader(L"DefaultVS", EShaderType::VERTEX_SHADER);
 
 	std::vector<DX11VertexPositionScale> vecVertex;
 	vecVertex.push_back(DX11VertexPositionScale{ DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 1.25f) });
@@ -34,15 +34,15 @@ void Scene::StartUp()
 #pragma endregion
 
 #pragma region «»ºø ºŒ¿Ã¥ı
-	std::shared_ptr<Shader> spPixelShader = std::make_shared<Shader>(L"DefaultPS", EShaderType::PIXEL_SHADER);
-	spPixelShader->LoadShader();
+	std::shared_ptr<Shader> spPixelShader = std::make_shared<Shader>();
+	spPixelShader->LoadShader(L"DefaultPS", EShaderType::PIXEL_SHADER);
 	m_spPixelShader = std::make_shared<DX11PixelShader>();
 	m_spPixelShader->CreatePixelShader(spPixelShader.get(), m_pGfx);
 #pragma endregion
 
 #pragma region ¡ˆø¿∏ﬁ∆Æ∏Æ ºŒ¿Ã¥ı
-	std::shared_ptr<Shader> spGeometryShader = std::make_shared<Shader>(L"DefaultGS", EShaderType::GEOMETRY_SHADER);
-	spGeometryShader->LoadShader();
+	std::shared_ptr<Shader> spGeometryShader = std::make_shared<Shader>();
+	spGeometryShader->LoadShader(L"DefaultGS", EShaderType::GEOMETRY_SHADER);
 	m_spGeometryShader = std::make_shared<DX11GeometryShader>();
 	m_spGeometryShader->CreateGeometryShader(spGeometryShader.get(), m_pGfx);
 #pragma endregion
@@ -58,6 +58,7 @@ void Scene::StartUp()
 
 	m_spTex2D = std::make_shared<DX11Texture2D>();
 	m_spTex2D->LoadTexture(L"Textures/KirbyTitle.jpg", m_pGfx);
+	//m_spTex2D->LoadTexture(L"Textures/KirbyAlpha.png", m_pGfx);
 }
 
 void Scene::CleanUp()
