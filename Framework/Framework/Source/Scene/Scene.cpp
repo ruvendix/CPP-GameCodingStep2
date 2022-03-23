@@ -26,7 +26,7 @@ void Scene::StartUp()
 	spVertexShader->LoadShader(L"DefaultVS", EShaderType::VERTEX_SHADER);
 
 	std::vector<DX11VertexPositionScale> vecVertex;
-	vecVertex.push_back(DX11VertexPositionScale{ DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 1.25f) });
+	vecVertex.push_back(DX11VertexPositionScale{ DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT2(1600.0f, 1200.0f) });
 
 	m_spVertexShader = std::make_shared<DX11VertexShader>();
 	m_spVertexShader->CreateVertexShader(spVertexShader.get(), m_pGfx);
@@ -57,8 +57,30 @@ void Scene::StartUp()
 	m_pGfx->GetContext()->GetNativeDevice()->CreateSamplerState(&samplerDesc, m_spSamplerState.GetAddressOf());
 
 	m_spTex2D = std::make_shared<DX11Texture2D>();
-	m_spTex2D->LoadTexture(L"Textures/KirbyTitle.jpg", m_pGfx);
-	//m_spTex2D->LoadTexture(L"Textures/KirbyAlpha.png", m_pGfx);
+	//m_spTex2D->LoadTexture(L"Textures/KirbyTitle.jpg", m_pGfx);
+	m_spTex2D->LoadTexture(L"Textures/KirbyAlpha.png", m_pGfx);
+
+	// 점을 이동시켜야 작동함
+	float radian = 60.0f * (3.141592f / 180.0f);
+	DirectX::XMMATRIX matWorld = DirectX::XMMatrixRotationZ(radian);
+	DirectX::XMStoreFloat4x4(&m_matWorld, matWorld);
+
+	DirectX::XMMATRIX matView = DirectX::XMMatrixLookAtLH(
+		DirectX::XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f),
+		DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
+		DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f));
+	DirectX::XMStoreFloat4x4(&m_matView, matView);
+
+	DirectX::XMMATRIX matProjection = DirectX::XMMatrixOrthographicLH(1600.0f, 1200.0f, 0.001f, 10.0f);
+	DirectX::XMStoreFloat4x4(&m_matProjection, matProjection);
+
+	D3D11_BUFFER_DESC constantBufferDesc;
+	::ZeroMemory(&constantBufferDesc, sizeof(D3D11_BUFFER_DESC));
+	constantBufferDesc.ByteWidth = sizeof(MatrixBuffer);
+	constantBufferDesc.Usage = D3D11_USAGE_DYNAMIC; // CPU에서 읽기/쓰기 가능성 열어둠
+	constantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE; // CPU 쓰기만 허용
+	constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	m_pGfx->GetContext()->GetNativeDevice()->CreateBuffer(&constantBufferDesc, nullptr, m_spConstantBuffer.GetAddressOf());
 }
 
 void Scene::CleanUp()
@@ -68,7 +90,26 @@ void Scene::CleanUp()
 
 void Scene::Update()
 {
+	DirectX::XMMATRIX matWorld = DirectX::XMLoadFloat4x4(&m_matWorld);
+	DirectX::XMStoreFloat4x4(&(m_resultMatrix.matWorld), DirectX::XMMatrixTranspose(matWorld)); // 셰이더에서 사용하려면 전치 필수!
 
+	DirectX::XMMATRIX matView = DirectX::XMLoadFloat4x4(&m_matView);
+	DirectX::XMStoreFloat4x4(&(m_resultMatrix.matView), DirectX::XMMatrixTranspose(matView)); // 셰이더에서 사용하려면 전치 필수!
+
+	DirectX::XMMATRIX matProjection = DirectX::XMLoadFloat4x4(&m_matProjection);
+	DirectX::XMStoreFloat4x4(&(m_resultMatrix.matProjection), DirectX::XMMatrixTranspose(matProjection)); // 셰이더에서 사용하려면 전치 필수!
+
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	::ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+
+	m_pGfx->GetContext()->GetNativeDeviceContext()->Map(m_spConstantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	{
+		MatrixBuffer* pResultMatrix = reinterpret_cast<MatrixBuffer*>(mappedResource.pData); // GPU에서의 주소
+		pResultMatrix->matWorld = m_resultMatrix.matWorld; // CPU에서의 주소
+		pResultMatrix->matView = m_resultMatrix.matView; // CPU에서의 주소
+		pResultMatrix->matProjection = m_resultMatrix.matProjection; // CPU에서의 주소
+	}
+	m_pGfx->GetContext()->GetNativeDeviceContext()->Unmap(m_spConstantBuffer.Get(), 0);
 }
 
 void Scene::Render()
@@ -86,6 +127,9 @@ void Scene::Render()
 	pDeviceCtx->VSSetShader(m_spVertexShader->GetNativeVertexShader(), nullptr, 0);
 	pDeviceCtx->GSSetShader(m_spGeometryShader->GetNativeGeometryShader(), nullptr, 0);
 	pDeviceCtx->PSSetShader(m_spPixelShader->GetNativePixelShader(), nullptr, 0);
+
+	pDeviceCtx->VSSetConstantBuffers(0, 1, m_spConstantBuffer.GetAddressOf());
+	pDeviceCtx->GSSetConstantBuffers(0, 1, m_spConstantBuffer.GetAddressOf());
 
 	pDeviceCtx->PSSetSamplers(0, 1, m_spSamplerState.GetAddressOf());
 	pDeviceCtx->PSSetShaderResources(0, 1, m_spTex2D->GetNativeShaderResourceViewAddress());

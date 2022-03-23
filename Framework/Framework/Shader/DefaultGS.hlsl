@@ -1,3 +1,10 @@
+cbuffer MatrixResult : register(b0)
+{
+    matrix matWorld;
+    matrix matView;
+    matrix matProjection;
+};
+
 struct GS_Input
 {
 	float4 pos : POSITION;
@@ -31,6 +38,9 @@ void DefaultGS(point GS_Input input[1], inout TriangleStream<GS_Output> stream)
     [unroll(4)] // 반복문을 하나씩 펼치는 방식 (이거 없으면 경고 뜸)
     for (uint i = 0; i < 4; i++)
     {     
+        //outputs[i].pos = mul(outputs[i].pos, matWorld);
+        outputs[i].pos = mul(outputs[i].pos, matView);
+        outputs[i].pos = mul(outputs[i].pos, matProjection);
         stream.Append(outputs[i]);
     }
 }

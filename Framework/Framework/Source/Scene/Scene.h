@@ -34,4 +34,16 @@ private:
 
 	// 일단은 되는지 테스트
 	Microsoft::WRL::ComPtr<ID3D11SamplerState> m_spSamplerState;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_spConstantBuffer;
+
+	DirectX::XMFLOAT4X4 m_matWorld;
+	DirectX::XMFLOAT4X4 m_matView;
+	DirectX::XMFLOAT4X4 m_matProjection;
+
+	struct MatrixBuffer
+	{
+		DirectX::XMFLOAT4X4 matWorld;
+		DirectX::XMFLOAT4X4 matView;
+		DirectX::XMFLOAT4X4 matProjection;
+	} m_resultMatrix;
 };
