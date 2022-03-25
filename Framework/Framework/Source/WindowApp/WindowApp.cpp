@@ -7,6 +7,7 @@
 #include "Config/Config.h"
 #include "Graphics/Graphics.h"
 #include "Graphics/DX11/DX11Context.h"
+#include "InputDevice/InputManager.h"
 #include "Scene/Scene.h"
 
 #ifdef _DEBUG
@@ -203,6 +204,7 @@ void WindowApp::CleanUp()
 
 void WindowApp::Do()
 {
+	SINGLETON(InputManager).Update();
 	m_spScene->Update();
 
 	m_spGfx->BeginRender();

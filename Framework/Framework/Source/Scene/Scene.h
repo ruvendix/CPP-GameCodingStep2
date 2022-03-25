@@ -1,6 +1,7 @@
 #pragma once
 
 #include "PCH.h"
+#include "InputDevice/InputManager.h"
 
 class Graphics;
 class DX11VertexShader;
@@ -20,6 +21,18 @@ public:
 
 	void Update();
 	void Render();
+
+	void OnLeftKeyDown()
+	{
+		m_posX -= 100.0f;
+		::OutputDebugString("Left키 눌리는중!\n");
+	}
+
+	void OnLeftKeyUp()
+	{
+		m_posX = 0.0f;
+		::OutputDebugString("Left키 뗌!\n");
+	}
 
 private:
 	std::string m_strName;
@@ -46,4 +59,6 @@ private:
 		DirectX::XMFLOAT4X4 matView;
 		DirectX::XMFLOAT4X4 matProjection;
 	} m_resultMatrix;
+
+	float m_posX = 0.0f;
 };

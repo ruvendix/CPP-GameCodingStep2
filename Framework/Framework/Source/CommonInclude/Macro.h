@@ -38,3 +38,5 @@ public:\
 	}\
 private:\
 		OutSideType* m_pOutside = nullptr;
+
+#define BIND_INPUT_LISTENER(virtualKeyCode, inputState, listener) InputEvent{ virtualKeyCode, inputState }, std::bind(&listener, this)

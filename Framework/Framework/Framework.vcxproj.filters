@@ -100,6 +100,12 @@
     <ClCompile Include="Source\Graphics\DX11\Resource\DX11Texture2D.cpp">
       <Filter>Source\Graphics\DX11\Resource</Filter>
     </ClCompile>
+    <ClCompile Include="Source\InputDevice\InputComponent.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InputDevice\InputManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\WindowApp\WindowViewer\WindowViewer.h">
@@ -162,6 +168,8 @@
     <ClInclude Include="Source\Graphics\DX11\Resource\DX11Texture2D.h">
       <Filter>Source\Graphics\DX11\Resource</Filter>
     </ClInclude>
+    <ClInclude Include="Source\InputDevice\InputComponent.h" />
+    <ClInclude Include="Source\InputDevice\InputManager.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\DefaultGS.hlsl">

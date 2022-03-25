@@ -5,6 +5,7 @@
 #include "WindowApp/WindowApp.h"
 
 #include "ErrorHandler/ErrorHandler.h"
+#include "InputDevice/InputManager.h"
 
 WindowProcedure::WindowProcedure()
 {
@@ -25,6 +26,8 @@ LRESULT CALLBACK WindowProcedure::CallWindowProcedure(HWND hWnd, UINT msg, WPARA
 		HANDLE_MSG(hWnd, WM_WINDOWPOSCHANGING, OnWindowPosChanging);
 
 		HANDLE_MSG(hWnd, WM_DESTROY, OnDestroy);
+		HANDLE_MSG(hWnd, WM_KEYDOWN, OnKeyDown);
+		HANDLE_MSG(hWnd, WM_KEYUP, OnKeyUp);
 		HANDLE_MSG(hWnd, WM_LBUTTONDOWN, OnLButtonDown);
 		HANDLE_MSG(hWnd, WM_SETFOCUS, OnSetFocus);
 		HANDLE_MSG(hWnd, WM_KILLFOCUS, OnKillFocus);
@@ -63,6 +66,16 @@ void WindowProcedure::OnKillFocus(HWND hWnd, HWND hNewFocusWnd)
 		m_bAltTabMinimize = !m_bAltTabMinimize;
 		m_pWndApp->ToggleAltTabState(m_bAltTabMinimize);
 	}
+}
+
+void WindowProcedure::OnKeyDown(HWND hWnd, UINT virtualKeyCode, BOOL bKeyDown, int repeat, UINT flags)
+{
+	SINGLETON(InputManager).PushInputEvent(InputEvent{ virtualKeyCode, EInputState::DOWN });
+}
+
+void WindowProcedure::OnKeyUp(HWND hWnd, UINT virtualKeyCode, BOOL bKeyDown, int repeat, UINT flags)
+{
+	SINGLETON(InputManager).PushInputEvent(InputEvent{ virtualKeyCode, EInputState::UP });
 }
 
 void WindowProcedure::OnLButtonDown(HWND hWnd, BOOL bDoubleClick, INT32 x, INT32 y, UINT keyFlags)

@@ -19,6 +19,8 @@ public:
 	virtual void OnDestroy(HWND hWnd);
 	virtual void OnSetFocus(HWND hWnd, HWND hOldFoucsWnd);
 	virtual void OnKillFocus(HWND hWnd, HWND hNewFocusWnd);
+	virtual void OnKeyDown(HWND hWnd, UINT virtualKeyCode, BOOL bKeyDown, int repeat, UINT flags);
+	virtual void OnKeyUp(HWND hWnd, UINT virtualKeyCode, BOOL bKeyDown, int repeat, UINT flags);
 	virtual void OnLButtonDown(HWND hWnd, BOOL bDoubleClick, INT32 x, INT32 y, UINT keyFlags);
 	virtual void OnSysKeyDown(HWND hWnd, UINT virtualKeyCode, BOOL bKeyDown, int repeat, UINT flags);
 	virtual void OnSysKeyUp(HWND hwnd, UINT virtualKeyCode, BOOL bKeyDown, int repeat, UINT flags);

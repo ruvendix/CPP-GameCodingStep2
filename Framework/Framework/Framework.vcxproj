@@ -112,6 +112,8 @@
     <ClCompile Include="Source\Graphics\DX11\Resource\DX11VertexShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader.cpp" />
     <ClCompile Include="Source\Graphics\Graphics.cpp" />
+    <ClCompile Include="Source\InputDevice\InputComponent.cpp" />
+    <ClCompile Include="Source\InputDevice\InputManager.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\PCH\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -142,6 +144,8 @@
     <ClInclude Include="Source\Graphics\DX11\Resource\DX11VertexShader.h" />
     <ClInclude Include="Source\Graphics\Shader.h" />
     <ClInclude Include="Source\Graphics\Graphics.h" />
+    <ClInclude Include="Source\InputDevice\InputComponent.h" />
+    <ClInclude Include="Source\InputDevice\InputManager.h" />
     <ClInclude Include="Source\PCH\PCH.h" />
     <ClInclude Include="Source\Scene\Scene.h" />
     <ClInclude Include="Source\WindowApp\WindowProcedure\WindowProcedure.h" />

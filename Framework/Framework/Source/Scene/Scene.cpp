@@ -3,6 +3,9 @@
 
 #include "ErrorHandler/ErrorHandler.h"
 
+#include "InputDevice/InputManager.h"
+#include "InputDevice/InputComponent.h"
+
 #include "Graphics/Shader.h"
 #include "Graphics/Graphics.h"
 #include "Graphics/DX11/DX11Context.h"
@@ -21,6 +24,10 @@ Scene::Scene(const std::string& strName, Graphics* pGfx) :
 
 void Scene::StartUp()
 {
+	InputComponent* pInputComponent = SINGLETON(InputManager).CreateInputComponent();
+	pInputComponent->RegisterListener(BIND_INPUT_LISTENER(VK_LEFT, EInputState::DOWN, Scene::OnLeftKeyDown));
+	pInputComponent->RegisterListener(BIND_INPUT_LISTENER(VK_LEFT, EInputState::UP, Scene::OnLeftKeyUp));
+
 #pragma region 버텍스 셰이더
 	std::shared_ptr<Shader> spVertexShader = std::make_shared<Shader>();
 	spVertexShader->LoadShader(L"DefaultVS", EShaderType::VERTEX_SHADER);
@@ -57,13 +64,16 @@ void Scene::StartUp()
 	m_pGfx->GetContext()->GetNativeDevice()->CreateSamplerState(&samplerDesc, m_spSamplerState.GetAddressOf());
 
 	m_spTex2D = std::make_shared<DX11Texture2D>();
-	//m_spTex2D->LoadTexture(L"Textures/KirbyTitle.jpg", m_pGfx);
-	m_spTex2D->LoadTexture(L"Textures/KirbyAlpha.png", m_pGfx);
+	m_spTex2D->LoadTexture(L"Textures/KirbyTitle.jpg", m_pGfx);
+	//m_spTex2D->LoadTexture(L"Textures/KirbyAlpha.png", m_pGfx);
 
 	// 점을 이동시켜야 작동함
-	float radian = 60.0f * (3.141592f / 180.0f);
-	DirectX::XMMATRIX matWorld = DirectX::XMMatrixRotationZ(radian);
-	DirectX::XMStoreFloat4x4(&m_matWorld, matWorld);
+	//float radian = 60.0f * (3.141592f / 180.0f);
+	//DirectX::XMMATRIX matWorld = DirectX::XMMatrixRotationZ(radian);
+
+	//DirectX::XMMATRIX matWorld = DirectX::XMMatrixTranslation(100.0f, 0.0f, 0.0f);
+	//DirectX::XMStoreFloat4x4(&m_matWorld, matWorld);
+	DirectX::XMStoreFloat4x4(&m_matWorld, DirectX::XMMatrixIdentity());
 
 	DirectX::XMMATRIX matView = DirectX::XMMatrixLookAtLH(
 		DirectX::XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f),
@@ -91,6 +101,7 @@ void Scene::CleanUp()
 void Scene::Update()
 {
 	DirectX::XMMATRIX matWorld = DirectX::XMLoadFloat4x4(&m_matWorld);
+	matWorld = DirectX::XMMatrixTranslation(m_posX, 0.0f, 0.0f);
 	DirectX::XMStoreFloat4x4(&(m_resultMatrix.matWorld), DirectX::XMMatrixTranspose(matWorld)); // 셰이더에서 사용하려면 전치 필수!
 
 	DirectX::XMMATRIX matView = DirectX::XMLoadFloat4x4(&m_matView);

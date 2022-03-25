@@ -10,6 +10,9 @@
 #include <locale>
 #include <codecvt>
 #include <array>
+#include <functional>
+#include <unordered_map>
+#include <queue>
 #pragma endregion
 
 #pragma region Win32API
