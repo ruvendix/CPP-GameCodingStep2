@@ -70,12 +70,12 @@ void WindowProcedure::OnKillFocus(HWND hWnd, HWND hNewFocusWnd)
 
 void WindowProcedure::OnKeyDown(HWND hWnd, UINT virtualKeyCode, BOOL bKeyDown, int repeat, UINT flags)
 {
-	SINGLETON(InputManager).PushInputEvent(InputEvent{ virtualKeyCode, EInputState::DOWN });
+	SINGLETON(InputManager).PushInputEvent(InputEvent{ static_cast<UINT8>(virtualKeyCode), EInputState::DOWN });
 }
 
 void WindowProcedure::OnKeyUp(HWND hWnd, UINT virtualKeyCode, BOOL bKeyDown, int repeat, UINT flags)
 {
-	SINGLETON(InputManager).PushInputEvent(InputEvent{ virtualKeyCode, EInputState::UP });
+	SINGLETON(InputManager).PushInputEvent(InputEvent{ static_cast<UINT8>(virtualKeyCode), EInputState::UP });
 }
 
 void WindowProcedure::OnLButtonDown(HWND hWnd, BOOL bDoubleClick, INT32 x, INT32 y, UINT keyFlags)

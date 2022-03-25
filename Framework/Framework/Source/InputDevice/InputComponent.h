@@ -15,5 +15,5 @@ public:
 	Listener FindListener(const InputEvent& inputEvent);
 
 private:
-	std::unordered_map<UINT64, Listener> m_mapListener;
+	std::unordered_map<UINT16, Listener> m_mapListener;
 };

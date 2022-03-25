@@ -41,6 +41,9 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{f4140f90-9234-487d-8ca6-2ae3d1c1155c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\InputDevice">
+      <UniqueIdentifier>{627d48e1-1823-43c2-93a1-b1ecb6ba1a6c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -100,11 +103,11 @@
     <ClCompile Include="Source\Graphics\DX11\Resource\DX11Texture2D.cpp">
       <Filter>Source\Graphics\DX11\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="Source\InputDevice\InputComponent.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\InputDevice\InputManager.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\InputDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InputDevice\InputComponent.cpp">
+      <Filter>Source\InputDevice</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -168,8 +171,12 @@
     <ClInclude Include="Source\Graphics\DX11\Resource\DX11Texture2D.h">
       <Filter>Source\Graphics\DX11\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Source\InputDevice\InputComponent.h" />
-    <ClInclude Include="Source\InputDevice\InputManager.h" />
+    <ClInclude Include="Source\InputDevice\InputComponent.h">
+      <Filter>Source\InputDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InputDevice\InputManager.h">
+      <Filter>Source\InputDevice</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\DefaultGS.hlsl">

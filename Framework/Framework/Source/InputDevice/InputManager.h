@@ -2,7 +2,7 @@
 
 #include "PCH.h"
 
-enum class EInputState : UINT
+enum class EInputState : UINT8
 {
 	DOWN = 0,
 	UP,
@@ -12,11 +12,11 @@ union InputEvent
 {
 	struct
 	{
-		DWORD dwInputCode;
+		UINT8 inputCode;
 		EInputState inputState;
 	};
 
-	UINT64 ID;
+	UINT16 ID;
 };
 
 class Scene;
