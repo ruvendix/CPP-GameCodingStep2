@@ -11,7 +11,7 @@ public:
 	Graphics() = default;
 	~Graphics() = default;
 
-	HRESULT StartUp(HWND hWnd, Config* pConfig);
+	HRESULT StartUp(HWND hWnd);
 	void CleanUp();
 
 	void BeginRender();

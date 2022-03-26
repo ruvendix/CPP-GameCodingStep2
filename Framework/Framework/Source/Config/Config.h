@@ -11,6 +11,8 @@ enum class EScreenMode : UINT
 
 class Config
 {
+	GENERATE_SINGLETON(Config);
+
 public:
 	Config();
 	~Config() = default;

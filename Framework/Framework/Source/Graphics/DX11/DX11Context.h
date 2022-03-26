@@ -11,7 +11,7 @@ class DX11Context
 	OUTSIDE_CLASS(DX11ContextInside);
 
 public:
-	DX11Context(Graphics* pGfx, Config* pConfig);
+	DX11Context(Graphics* pGfx);
 	~DX11Context() = default;
 
 	HRESULT StartUp(HWND hWnd);
@@ -30,7 +30,6 @@ public:
 
 private:
 	Graphics* m_pGfx = nullptr;
-	Config* m_pConfig = nullptr;
 
 	std::shared_ptr<DX11Adapter> m_spAdpater;
 

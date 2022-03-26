@@ -2,10 +2,10 @@
 
 #define GENERATE_SINGLETON(Type)\
 public:\
-	static Type& GetInstance()\
+	static std::shared_ptr<Type> GetInstance()\
 	{\
-		static Type inst;\
-		return inst;\
+		static std::shared_ptr<Type> spInst = std::make_shared<Type>();\
+		return spInst;\
 	}
 
 #define SINGLETON(Type) Type::GetInstance()
@@ -13,7 +13,7 @@ public:\
 #define COM_ERROR(errCode)\
 {\
 	std::string strLog;\
-	SINGLETON(ErrorHandler).ConvertComErrorString(errCode, strLog);\
+	SINGLETON(ErrorHandler)->ConvertComErrorString(errCode, strLog);\
     ::MessageBox(nullptr, strLog.c_str(), "COM ¿À·ù", MB_ICONERROR);\
 }
 

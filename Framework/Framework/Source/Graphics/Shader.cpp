@@ -58,11 +58,11 @@ void Shader::LoadShader(const std::wstring& wstrFileName, EShaderType shaderType
 		{
 			if (spErrorMsg != nullptr)
 			{
-				ErrorHandler::GetInstance().ShowCustomError(reinterpret_cast<const char*>(spErrorMsg->GetBufferPointer()));
+				ErrorHandler::GetInstance()->ShowCustomError(reinterpret_cast<const char*>(spErrorMsg->GetBufferPointer()));
 			}
 			else
 			{
-				ErrorHandler::GetInstance().ShowCustomError("셰이더 파일이 존재하지 않습니다!");
+				ErrorHandler::GetInstance()->ShowCustomError("셰이더 파일이 존재하지 않습니다!");
 			}
 		}
 	}

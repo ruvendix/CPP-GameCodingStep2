@@ -115,18 +115,18 @@ HRESULT WindowApp::StartUp()
 	UINT screenWidth = static_cast<UINT>(::GetSystemMetrics(SM_CXSCREEN));
 	UINT screenHeight = static_cast<UINT>(::GetSystemMetrics(SM_CYSCREEN));
 
-	m_spConfig = std::make_shared<Config>();
-	m_spConfig->SetScreenWidth(screenWidth);
-	m_spConfig->SetScreenHeight(screenHeight);
-	m_spConfig->SetCurrentScreenMode(EScreenMode::WINDOW);
-	m_spConfig->SetClientWidth(1600);
-	m_spConfig->SetClientHeight(1200);
-	m_spConfig->SetVSYNC(true);
+	std::shared_ptr<Config> spConfig = SINGLETON(Config);
+	spConfig->SetScreenWidth(screenWidth);
+	spConfig->SetScreenHeight(screenHeight);
+	spConfig->SetCurrentScreenMode(EScreenMode::WINDOW);
+	spConfig->SetClientWidth(1600);
+	spConfig->SetClientHeight(1200);
+	spConfig->SetVSYNC(true);
 
 	// 전체 화면으로 설정했다면 스왑 모드는 전체 창모드로 바꾼다
-	if (m_spConfig->GetCurrentScreenMode() == EScreenMode::FULLSCREEN)
+	if (spConfig->GetCurrentScreenMode() == EScreenMode::FULLSCREEN)
 	{
-		m_spConfig->SetAltEnterScreenMode(EScreenMode::FULLSCREEN_WINDOW);
+		spConfig->SetAltEnterScreenMode(EScreenMode::FULLSCREEN_WINDOW);
 	}
 
 	WindowCreateInfo wndCreateInfo;
@@ -134,7 +134,7 @@ HRESULT WindowApp::StartUp()
 	wndCreateInfo.hInst = m_hInst;
 	wndCreateInfo.dwExStyle = WS_EX_TOPMOST | WS_EX_APPWINDOW;
 
-	EScreenMode screenMode = m_spConfig->GetCurrentScreenMode();
+	EScreenMode screenMode = spConfig->GetCurrentScreenMode();
 	if (screenMode == EScreenMode::WINDOW)
 	{
 		wndCreateInfo.dwStyle = WS_OVERLAPPEDWINDOW;
@@ -142,19 +142,19 @@ HRESULT WindowApp::StartUp()
 	else
 	{
 		wndCreateInfo.dwStyle = WS_POPUP;
-		m_spConfig->ChangeDeviceResolution(m_spConfig->GetClientWidth(), m_spConfig->GetClientHeight());
+		spConfig->ChangeDeviceResolution(spConfig->GetClientWidth(), spConfig->GetClientHeight());
 	}
-	m_spConfig->AdjustWindowRect(wndCreateInfo.dwStyle, wndCreateInfo.dwExStyle);
+	spConfig->AdjustWindowRect(wndCreateInfo.dwStyle, wndCreateInfo.dwExStyle);
 
-	wndCreateInfo.windowWidth = m_spConfig->GetWindowWidth();
-	wndCreateInfo.windowHeight = m_spConfig->GetWindowHeight();
+	wndCreateInfo.windowWidth = spConfig->GetWindowWidth();
+	wndCreateInfo.windowHeight = spConfig->GetWindowHeight();
 
-	wndCreateInfo.windowStartPos.x = static_cast<UINT>((m_spConfig->GetScreenWidth() - wndCreateInfo.windowWidth) * 0.5f);
-	wndCreateInfo.windowStartPos.y = static_cast<UINT>((m_spConfig->GetScreenHeight() - wndCreateInfo.windowHeight) * 0.5f);
-	m_spConfig->SetWindowStartPos(wndCreateInfo.windowStartPos);
+	wndCreateInfo.windowStartPos.x = static_cast<UINT>((spConfig->GetScreenWidth() - wndCreateInfo.windowWidth) * 0.5f);
+	wndCreateInfo.windowStartPos.y = static_cast<UINT>((spConfig->GetScreenHeight() - wndCreateInfo.windowHeight) * 0.5f);
+	spConfig->SetWindowStartPos(wndCreateInfo.windowStartPos);
 
 	m_spWndProcedure = std::make_shared<WindowProcedure>();
-	m_spWndProcedure->SetConfig(m_spConfig.get());
+	m_spWndProcedure->SetConfig(spConfig.get());
 	m_spWndProcedure->SetWindowApp(this);
 	wndCreateInfo.pWndProcedure = m_spWndProcedure.get();
 
@@ -171,7 +171,7 @@ HRESULT WindowApp::StartUp()
 	TEST_COM(CoInitialize(nullptr), hRet); // COM 사용하기 전에 호출!
 	
 	m_spGfx = std::make_shared<Graphics>();
-	if (FAILED(m_spGfx->StartUp(hWnd, m_spConfig.get())))
+	if (FAILED(m_spGfx->StartUp(hWnd)))
 	{
 		return E_FAIL;
 	}
@@ -189,9 +189,10 @@ void WindowApp::CleanUp()
 
 	CoUninitialize(); // COM 사용이 끝났으면 호출!
 
-	if (m_spConfig->GetCurrentScreenMode() != EScreenMode::WINDOW)
+	std::shared_ptr<Config> spConfig = SINGLETON(Config);
+	if (spConfig->GetCurrentScreenMode() != EScreenMode::WINDOW)
 	{
-		m_spConfig->ChangeDeviceResolution(m_spConfig->GetScreenWidth(), m_spConfig->GetScreenHeight());
+		spConfig->ChangeDeviceResolution(spConfig->GetScreenWidth(), spConfig->GetScreenHeight());
 	}
 
 	m_spWndViewer->Destroy();
@@ -204,7 +205,7 @@ void WindowApp::CleanUp()
 
 void WindowApp::Do()
 {
-	SINGLETON(InputManager).Update();
+	SINGLETON(InputManager)->Update();
 	m_spScene->Update();
 
 	m_spGfx->BeginRender();
@@ -217,17 +218,19 @@ void WindowApp::Do()
 void WindowApp::ToggleScreenMode()
 {
 	// 현재 화면 모드와 (Alt + Enter) 모드를 바꾸면서 적용
-	EScreenMode tempScreenMode = m_spConfig->GetCurrentScreenMode();
-	EScreenMode altEnterScreenMode = m_spConfig->GetAltEnterScreenMode();
+	EScreenMode tempScreenMode = SINGLETON(Config)->GetCurrentScreenMode();
+	EScreenMode altEnterScreenMode = SINGLETON(Config)->GetAltEnterScreenMode();
 
-	m_spConfig->SetCurrentScreenMode(altEnterScreenMode);
-	m_spConfig->SetAltEnterScreenMode(tempScreenMode);
+	SINGLETON(Config)->SetCurrentScreenMode(altEnterScreenMode);
+	SINGLETON(Config)->SetAltEnterScreenMode(tempScreenMode);
 
 	DX11Context* pCtx = m_spGfx->GetContext();
 	if (pCtx->GetNativeSwapChain() == nullptr)
 	{
 		return;
 	}
+
+	std::shared_ptr<Config> spConfig = SINGLETON(Config);
 
 	switch (altEnterScreenMode)
 	{
@@ -236,10 +239,10 @@ void WindowApp::ToggleScreenMode()
 		::SetWindowLongPtr(m_spWndViewer->GetWindowHandle(), GWL_STYLE, WS_OVERLAPPEDWINDOW);
 		::ShowWindow(m_spWndViewer->GetWindowHandle(), SW_SHOW);
 
-		const Position2D& windowStartPos = m_spConfig->GetWindowStartPos();
+		const Position2D& windowStartPos = spConfig->GetWindowStartPos();
 		::SetWindowPos(m_spWndViewer->GetWindowHandle(), nullptr, windowStartPos.x, windowStartPos.y, 0, 0, SWP_NOSIZE);
 
-		m_spConfig->ChangeDeviceResolution(m_spConfig->GetScreenWidth(), m_spConfig->GetScreenHeight());
+		spConfig->ChangeDeviceResolution(spConfig->GetScreenWidth(), spConfig->GetScreenHeight());
 		pCtx->GetNativeSwapChain()->SetFullscreenState(FALSE, nullptr);
 
 		break;
@@ -247,7 +250,7 @@ void WindowApp::ToggleScreenMode()
 
 	case EScreenMode::FULLSCREEN_WINDOW: // 모니터 해상도와 창 해상도를 일치시키는 경우
 	{
-		m_spConfig->ChangeDeviceResolution(m_spConfig->GetClientWidth(), m_spConfig->GetClientHeight());
+		spConfig->ChangeDeviceResolution(spConfig->GetClientWidth(), spConfig->GetClientHeight());
 		pCtx->GetNativeSwapChain()->SetFullscreenState(FALSE, nullptr);
 
 		break;
@@ -255,7 +258,7 @@ void WindowApp::ToggleScreenMode()
 
 	case EScreenMode::FULLSCREEN: // 설정한 해상도를 전체 화면으로 설정하는 경우
 	{
-		m_spConfig->ChangeDeviceResolution(m_spConfig->GetClientWidth(), m_spConfig->GetClientHeight());
+		spConfig->ChangeDeviceResolution(spConfig->GetClientWidth(), spConfig->GetClientHeight());
 
 		pCtx->RefreshSwapChain();
 		pCtx->GetNativeSwapChain()->SetFullscreenState(TRUE, nullptr);
@@ -267,7 +270,8 @@ void WindowApp::ToggleScreenMode()
 
 void WindowApp::ToggleAltTabState(bool bAltTabMinimize)
 {
-	EScreenMode screenMode = m_spConfig->GetCurrentScreenMode();
+	std::shared_ptr<Config> spConfig = SINGLETON(Config);
+	EScreenMode screenMode = spConfig->GetCurrentScreenMode();
 	if (screenMode != EScreenMode::FULLSCREEN)
 	{
 		return;
@@ -283,7 +287,7 @@ void WindowApp::ToggleAltTabState(bool bAltTabMinimize)
 		::SetWindowLongPtr(m_spWndViewer->GetWindowHandle(), GWL_STYLE, WS_POPUP);
 		::ShowWindow(m_spWndViewer->GetWindowHandle(), SW_SHOW);
 
-		m_spConfig->ChangeDeviceResolution(m_spConfig->GetClientWidth(), m_spConfig->GetClientHeight());
+		spConfig->ChangeDeviceResolution(spConfig->GetClientWidth(), spConfig->GetClientHeight());
 
 		DX11Context* pCtx = m_spGfx->GetContext();
 		ASSERT(pCtx != nullptr);

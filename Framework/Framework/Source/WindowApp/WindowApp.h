@@ -34,7 +34,6 @@ private:
 	std::shared_ptr<WindowViewer> m_spWndViewer;
 	std::shared_ptr<WindowProcedure> m_spWndProcedure;
 
-	std::shared_ptr<Config> m_spConfig;
 	std::shared_ptr<Graphics> m_spGfx;
 
 	bool m_bRun = true;

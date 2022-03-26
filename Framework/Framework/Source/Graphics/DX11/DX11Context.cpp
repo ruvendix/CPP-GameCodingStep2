@@ -18,9 +18,9 @@ void DX11ContextInside::InitSwapChainDesc(HWND hWnd, const DXGI_RATIONAL& refres
 {
 	refSwapChainDesc.BufferCount = 1; // 백버퍼 사용 개수(프론트 버퍼 포함 2개)
 
-	const Config* pConfig = m_pOutside->m_pConfig;
-	refSwapChainDesc.BufferDesc.Width = pConfig->GetClientWidth(); // 백버퍼 너비
-	refSwapChainDesc.BufferDesc.Height = pConfig->GetClientHeight(); // 백퍼버 높이
+	std::shared_ptr<Config> spConfig = SINGLETON(Config);
+	refSwapChainDesc.BufferDesc.Width = spConfig->GetClientWidth(); // 백버퍼 너비
+	refSwapChainDesc.BufferDesc.Height = spConfig->GetClientHeight(); // 백퍼버 높이
 
 	// 픽셀당 4바이트(32비트)를 사용하는 게 일반적이고
 	// 각 색상값을 어떻게 표현하는지가 중요함!
@@ -32,7 +32,7 @@ void DX11ContextInside::InitSwapChainDesc(HWND hWnd, const DXGI_RATIONAL& refres
 	// TYPELESS => 해석 방법을 정하지 않음(값 자체를 전달할 때 사용됨)
 	refSwapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
-	if (pConfig->IsVSYNC())
+	if (spConfig->IsVSYNC())
 	{
 		refSwapChainDesc.BufferDesc.RefreshRate.Numerator = refreshRate.Numerator; // 분자
 		refSwapChainDesc.BufferDesc.RefreshRate.Denominator = refreshRate.Denominator; // 분모
@@ -49,7 +49,7 @@ void DX11ContextInside::InitSwapChainDesc(HWND hWnd, const DXGI_RATIONAL& refres
 
 	// 전체 화면일 때만 구분합니다.
 	// 창모드와 전체 창모드는 결국 창모드입니다.
-	EScreenMode screenMode = pConfig->GetCurrentScreenMode();
+	EScreenMode screenMode = spConfig->GetCurrentScreenMode();
 	if (screenMode == EScreenMode::FULLSCREEN)
 	{
 		refSwapChainDesc.Windowed = FALSE;
@@ -61,10 +61,9 @@ void DX11ContextInside::InitSwapChainDesc(HWND hWnd, const DXGI_RATIONAL& refres
 }
 
 ///////////////////////////////////////////////////////////////////
-DX11Context::DX11Context(Graphics* pGfx, Config* pConfig)
+DX11Context::DX11Context(Graphics* pGfx)
 {
 	m_pGfx = pGfx;
-	m_pConfig = pConfig;
 
 	m_clearColor = DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
 	m_spInside = std::make_shared<DX11ContextInside>(this);
@@ -80,7 +79,8 @@ HRESULT DX11Context::StartUp(HWND hWnd)
 
 	// 어댑터 정보와 호환되는 주사율 갱신 비율을 알아냅니다.
 	DXGI_RATIONAL refreshRate;
-	m_spAdpater->FindValidRefeshRate(m_pConfig->GetClientWidth(), m_pConfig->GetClientHeight(), refreshRate);
+	std::shared_ptr<Config> spConfig = SINGLETON(Config);
+	m_spAdpater->FindValidRefeshRate(spConfig->GetClientWidth(), spConfig->GetClientHeight(), refreshRate);
 
 	// 스왑체인 정보를 설정합니다.
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
@@ -119,8 +119,8 @@ HRESULT DX11Context::StartUp(HWND hWnd)
 	// 뷰포트는 래스터라이저 단계이므로 픽셀 셰이더 단계 이후로 넘어가려면 필수 설정 대상입니다!
 	D3D11_VIEWPORT viewPort;
 	::ZeroMemory(&viewPort, sizeof(D3D11_VIEWPORT));
-	viewPort.Width = static_cast<float>(m_pConfig->GetClientWidth());
-	viewPort.Height = static_cast<float>(m_pConfig->GetClientHeight());
+	viewPort.Width = static_cast<float>(spConfig->GetClientWidth());
+	viewPort.Height = static_cast<float>(spConfig->GetClientHeight());
 	m_spDeviceCtx->RSSetViewports(1, &viewPort);
 
 	return S_OK;
@@ -129,7 +129,7 @@ HRESULT DX11Context::StartUp(HWND hWnd)
 void DX11Context::CleanUp()
 {
 	// 종료하기 전에는 항상 창모드로 변경해야 안전하게 해제할 수 있습니다.
-	if (m_pConfig->GetCurrentScreenMode() == EScreenMode::FULLSCREEN)
+	if (SINGLETON(Config)->GetCurrentScreenMode() == EScreenMode::FULLSCREEN)
 	{
 		m_spSwapChain->SetFullscreenState(FALSE, nullptr);
 	}
@@ -142,7 +142,7 @@ void DX11Context::BeginRender()
 
 void DX11Context::EndRender()
 {
-	if (m_pConfig->IsVSYNC())
+	if (SINGLETON(Config)->IsVSYNC())
 	{
 		m_spSwapChain->Present(1, 0); // 갱신 비율을 고정합니다.
 	}
@@ -156,8 +156,8 @@ void DX11Context::RefreshSwapChain()
 {
 	DXGI_MODE_DESC desc;
 	::ZeroMemory(&desc, sizeof(DXGI_MODE_DESC));
-	desc.Width = m_pConfig->GetClientWidth();
-	desc.Height = m_pConfig->GetClientHeight();
+	desc.Width = SINGLETON(Config)->GetClientWidth();
+	desc.Height = SINGLETON(Config)->GetClientHeight();
 	desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
 	DXGI_RATIONAL refreshRate;

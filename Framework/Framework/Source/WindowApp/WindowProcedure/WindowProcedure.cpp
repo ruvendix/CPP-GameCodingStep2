@@ -70,12 +70,12 @@ void WindowProcedure::OnKillFocus(HWND hWnd, HWND hNewFocusWnd)
 
 void WindowProcedure::OnKeyDown(HWND hWnd, UINT virtualKeyCode, BOOL bKeyDown, int repeat, UINT flags)
 {
-	SINGLETON(InputManager).PushInputEvent(InputEvent{ static_cast<UINT8>(virtualKeyCode), EInputState::DOWN });
+	SINGLETON(InputManager)->PushInputEvent(InputEvent{ static_cast<UINT8>(virtualKeyCode), EInputState::DOWN });
 }
 
 void WindowProcedure::OnKeyUp(HWND hWnd, UINT virtualKeyCode, BOOL bKeyDown, int repeat, UINT flags)
 {
-	SINGLETON(InputManager).PushInputEvent(InputEvent{ static_cast<UINT8>(virtualKeyCode), EInputState::UP });
+	SINGLETON(InputManager)->PushInputEvent(InputEvent{ static_cast<UINT8>(virtualKeyCode), EInputState::UP });
 }
 
 void WindowProcedure::OnLButtonDown(HWND hWnd, BOOL bDoubleClick, INT32 x, INT32 y, UINT keyFlags)
@@ -85,10 +85,16 @@ void WindowProcedure::OnLButtonDown(HWND hWnd, BOOL bDoubleClick, INT32 x, INT32
 
 void WindowProcedure::OnSysKeyDown(HWND hWnd, UINT virtualKeyCode, BOOL bKeyDown, int repeat, UINT flags)
 {
-	if ((flags & KF_ALTDOWN) &&
-		(virtualKeyCode == VK_RETURN))
+	if (flags & KF_ALTDOWN)
 	{
-		m_pWndApp->ToggleScreenMode();
+		if (virtualKeyCode == VK_RETURN)
+		{
+			m_pWndApp->ToggleScreenMode();
+		}
+		else if (virtualKeyCode == VK_F4)
+		{
+			::PostQuitMessage(EXIT_SUCCESS);
+		}
 	}
 }
 

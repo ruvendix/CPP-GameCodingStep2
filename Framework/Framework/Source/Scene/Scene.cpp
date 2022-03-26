@@ -24,7 +24,7 @@ Scene::Scene(const std::string& strName, Graphics* pGfx) :
 
 void Scene::StartUp()
 {
-	InputComponent* pInputComponent = SINGLETON(InputManager).CreateInputComponent();
+	InputComponent* pInputComponent = SINGLETON(InputManager)->CreateInputComponent();
 	pInputComponent->RegisterListener(BIND_INPUT_LISTENER(VK_LEFT, EInputState::DOWN, Scene::OnLeftKeyDown));
 	pInputComponent->RegisterListener(BIND_INPUT_LISTENER(VK_LEFT, EInputState::UP, Scene::OnLeftKeyUp));
 
@@ -73,16 +73,16 @@ void Scene::StartUp()
 
 	//DirectX::XMMATRIX matWorld = DirectX::XMMatrixTranslation(100.0f, 0.0f, 0.0f);
 	//DirectX::XMStoreFloat4x4(&m_matWorld, matWorld);
-	DirectX::XMStoreFloat4x4(&m_matWorld, DirectX::XMMatrixIdentity());
+	DirectX::XMStoreFloat4x4(&m_resultMatrix.matWorld, DirectX::XMMatrixIdentity());
 
 	DirectX::XMMATRIX matView = DirectX::XMMatrixLookAtLH(
 		DirectX::XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f),
 		DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
 		DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f));
-	DirectX::XMStoreFloat4x4(&m_matView, matView);
+	DirectX::XMStoreFloat4x4(&m_resultMatrix.matView, matView);
 
 	DirectX::XMMATRIX matProjection = DirectX::XMMatrixOrthographicLH(1600.0f, 1200.0f, 0.001f, 10.0f);
-	DirectX::XMStoreFloat4x4(&m_matProjection, matProjection);
+	DirectX::XMStoreFloat4x4(&m_resultMatrix.matProjection, matProjection);
 
 	D3D11_BUFFER_DESC constantBufferDesc;
 	::ZeroMemory(&constantBufferDesc, sizeof(D3D11_BUFFER_DESC));
@@ -100,14 +100,14 @@ void Scene::CleanUp()
 
 void Scene::Update()
 {
-	DirectX::XMMATRIX matWorld = DirectX::XMLoadFloat4x4(&m_matWorld);
+	DirectX::XMMATRIX matWorld = DirectX::XMLoadFloat4x4(&m_resultMatrix.matWorld);
 	matWorld = DirectX::XMMatrixTranslation(m_posX, 0.0f, 0.0f);
 	DirectX::XMStoreFloat4x4(&(m_resultMatrix.matWorld), DirectX::XMMatrixTranspose(matWorld)); // 셰이더에서 사용하려면 전치 필수!
 
-	DirectX::XMMATRIX matView = DirectX::XMLoadFloat4x4(&m_matView);
+	DirectX::XMMATRIX matView = DirectX::XMLoadFloat4x4(&m_resultMatrix.matView);
 	DirectX::XMStoreFloat4x4(&(m_resultMatrix.matView), DirectX::XMMatrixTranspose(matView)); // 셰이더에서 사용하려면 전치 필수!
 
-	DirectX::XMMATRIX matProjection = DirectX::XMLoadFloat4x4(&m_matProjection);
+	DirectX::XMMATRIX matProjection = DirectX::XMLoadFloat4x4(&m_resultMatrix.matProjection);
 	DirectX::XMStoreFloat4x4(&(m_resultMatrix.matProjection), DirectX::XMMatrixTranspose(matProjection)); // 셰이더에서 사용하려면 전치 필수!
 
 	D3D11_MAPPED_SUBRESOURCE mappedResource;

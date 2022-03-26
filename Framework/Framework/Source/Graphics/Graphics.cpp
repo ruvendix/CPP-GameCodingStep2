@@ -3,9 +3,9 @@
 
 #include "DX11/DX11Context.h"
 
-HRESULT Graphics::StartUp(HWND hWnd, Config* pConfig)
+HRESULT Graphics::StartUp(HWND hWnd)
 {
-	m_spDX11Ctx = std::make_shared<DX11Context>(this, pConfig);
+	m_spDX11Ctx = std::make_shared<DX11Context>(this);
 	return (m_spDX11Ctx->StartUp(hWnd));
 }
 

@@ -49,10 +49,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11SamplerState> m_spSamplerState;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_spConstantBuffer;
 
-	DirectX::XMFLOAT4X4 m_matWorld;
-	DirectX::XMFLOAT4X4 m_matView;
-	DirectX::XMFLOAT4X4 m_matProjection;
-
 	struct MatrixBuffer
 	{
 		DirectX::XMFLOAT4X4 matWorld;
