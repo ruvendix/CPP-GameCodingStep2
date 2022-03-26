@@ -5,7 +5,7 @@
 #include "Graphics/Graphics.h"
 #include "Graphics/DX11/DX11Context.h"
 
-void DX11VertexBuffer::CreateVertexBuffer(Graphics* pGfx, UINT stride, void* pVertices, UINT vertexCount)
+void DX11VertexBuffer::CreateVertexBuffer(Graphics* pGfx, UINT stride, const void* pVertices, UINT vertexCount)
 {
 	m_stride = stride;
 
@@ -21,5 +21,5 @@ void DX11VertexBuffer::CreateVertexBuffer(Graphics* pGfx, UINT stride, void* pVe
 
 	HRESULT hRet = S_OK;
 	ID3D11Device* pDevice = pGfx->GetContext()->GetNativeDevice();
-	TEST_COM(pDevice->CreateBuffer(&desc, &data, m_spBuffer.GetAddressOf()), hRet);
+	TEST_COM(pDevice->CreateBuffer(&desc, &data, m_spVertexBuffer.GetAddressOf()), hRet);
 }

@@ -5,6 +5,7 @@
 #include "WindowViewer/WindowViewer.h"
 #include "WindowProcedure/WindowProcedure.h"
 #include "Config/Config.h"
+#include "ResourceManager/ResourceManager.h"
 #include "Graphics/Graphics.h"
 #include "Graphics/DX11/DX11Context.h"
 #include "InputDevice/InputManager.h"
@@ -175,6 +176,7 @@ HRESULT WindowApp::StartUp()
 	{
 		return E_FAIL;
 	}
+	SINGLETON(ResourceManager)->StartUp(m_spGfx.get());
 
 	m_spScene = std::make_shared<Scene>("MainScene", m_spGfx.get());
 	m_spScene->StartUp();

@@ -44,6 +44,9 @@
     <Filter Include="Source\InputDevice">
       <UniqueIdentifier>{627d48e1-1823-43c2-93a1-b1ecb6ba1a6c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Scene\GameObject">
+      <UniqueIdentifier>{8e3947b7-fce9-4769-9984-1cbc3c19010b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -108,6 +111,18 @@
     </ClCompile>
     <ClCompile Include="Source\InputDevice\InputComponent.cpp">
       <Filter>Source\InputDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\GameObject\TransformComponent.cpp">
+      <Filter>Source\Scene\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ResourceManager\ResourceManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\GameObject\GameObject2D.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\DX11\Resource\DX11ConstantBuffer.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -177,6 +192,13 @@
     <ClInclude Include="Source\InputDevice\InputManager.h">
       <Filter>Source\InputDevice</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scene\GameObject\TransformComponent.h">
+      <Filter>Source\Scene\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ResourceManager\ResourceManager.h" />
+    <ClInclude Include="Source\Graphics\DX11\Resource\DX11ConstantLayout.h" />
+    <ClInclude Include="Source\Scene\GameObject\GameObject2D.h" />
+    <ClInclude Include="Source\Graphics\DX11\Resource\DX11ConstantBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\DefaultGS.hlsl">

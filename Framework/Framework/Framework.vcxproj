@@ -103,6 +103,7 @@
     <ClCompile Include="Source\ErrorHandler\ErrorHandler.cpp" />
     <ClCompile Include="Source\Graphics\DX11\DX11Adapter.cpp" />
     <ClCompile Include="Source\Graphics\DX11\DX11Context.cpp" />
+    <ClCompile Include="Source\Graphics\DX11\Resource\DX11ConstantBuffer.cpp" />
     <ClCompile Include="Source\Graphics\DX11\Resource\DX11GeometryShader.cpp" />
     <ClCompile Include="Source\Graphics\DX11\Resource\DX11InputLayout.cpp" />
     <ClCompile Include="Source\Graphics\DX11\Resource\DX11PixelShader.cpp" />
@@ -123,6 +124,9 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)PCH_$(Configuration).pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)PCH_$(Configuration).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
+    <ClCompile Include="Source\ResourceManager\ResourceManager.cpp" />
+    <ClCompile Include="Source\Scene\GameObject\GameObject2D.cpp" />
+    <ClCompile Include="Source\Scene\GameObject\TransformComponent.cpp" />
     <ClCompile Include="Source\Scene\Scene.cpp" />
     <ClCompile Include="Source\WindowApp\WindowApp.cpp" />
     <ClCompile Include="Source\WindowApp\WindowProcedure\WindowProcedure.cpp" />
@@ -135,6 +139,8 @@
     <ClInclude Include="Source\ErrorHandler\ErrorHandler.h" />
     <ClInclude Include="Source\Graphics\DX11\DX11Adapter.h" />
     <ClInclude Include="Source\Graphics\DX11\DX11Context.h" />
+    <ClInclude Include="Source\Graphics\DX11\Resource\DX11ConstantBuffer.h" />
+    <ClInclude Include="Source\Graphics\DX11\Resource\DX11ConstantLayout.h" />
     <ClInclude Include="Source\Graphics\DX11\Resource\DX11GeometryShader.h" />
     <ClInclude Include="Source\Graphics\DX11\Resource\DX11InputLayout.h" />
     <ClInclude Include="Source\Graphics\DX11\Resource\DX11PixelShader.h" />
@@ -147,6 +153,9 @@
     <ClInclude Include="Source\InputDevice\InputComponent.h" />
     <ClInclude Include="Source\InputDevice\InputManager.h" />
     <ClInclude Include="Source\PCH\PCH.h" />
+    <ClInclude Include="Source\ResourceManager\ResourceManager.h" />
+    <ClInclude Include="Source\Scene\GameObject\GameObject2D.h" />
+    <ClInclude Include="Source\Scene\GameObject\TransformComponent.h" />
     <ClInclude Include="Source\Scene\Scene.h" />
     <ClInclude Include="Source\WindowApp\WindowProcedure\WindowProcedure.h" />
     <ClInclude Include="Source\WindowApp\WindowApp.h" />

@@ -10,13 +10,14 @@ public:
 	DX11VertexBuffer() = default;
 	~DX11VertexBuffer() = default;
 
-	void CreateVertexBuffer(Graphics* pGfx, UINT stride, void* pVertices, UINT vertexCount);
+	void CreateVertexBuffer(Graphics* pGfx, UINT stride, const void* pVertices, UINT vertexCount);
 
-	ID3D11Buffer* GetNativeBuffer() const { return m_spBuffer.Get(); }
+	ID3D11Buffer* GetNativeVertexBuffer() const { return m_spVertexBuffer.Get(); }
+	ID3D11Buffer** GetNativeVertexBufferAddressOf() { return m_spVertexBuffer.GetAddressOf(); }
 	UINT GetStride() const { return m_stride; }
 
 private:
 	UINT m_stride = 0;
 
-	Microsoft::WRL::ComPtr<ID3D11Buffer> m_spBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_spVertexBuffer;
 };
