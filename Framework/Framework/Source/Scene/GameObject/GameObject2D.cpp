@@ -23,10 +23,11 @@ GameObject2D::~GameObject2D()
 
 }
 
-void GameObject2D::StartUp()
+void GameObject2D::StartUp(const DirectX::XMFLOAT2& scale)
 {
 	// 트랜스폼 생성
 	m_spTransform = std::make_shared<TransformComponent>();
+	m_spTransform->SetScale(scale);
 
 	// 입력 리스너 등록
 	InputComponent* pInputComponent = SINGLETON(InputManager)->CreateInputComponent();
@@ -38,7 +39,7 @@ void GameObject2D::StartUp()
 
 	// 버텍스 버퍼
 	std::vector<DX11VertexPositionScale> vecVertex;
-	vecVertex.push_back(DX11VertexPositionScale{ DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT2(1600.0f, 1200.0f) });
+	vecVertex.push_back(DX11VertexPositionScale{ DirectX::XMFLOAT2(0.0f, 0.0f), scale });
 	SINGLETON(ResourceManager)->RegisterVertexBuffer<DX11VertexPositionScale>("GameObject2D_Vertex", vecVertex);
 
 	// 컨스턴트 버퍼 데이터 초기화
@@ -70,22 +71,16 @@ void GameObject2D::StartUp()
 	SINGLETON(ResourceManager)->RegisterSamplerState("DefaultSamplerState", samplerDesc);
 }
 
-void GameObject2D::Update(Graphics* pGfx)
+void GameObject2D::Update()
 {
-	DirectX::XMMATRIX matWorld = m_spTransform->BuildWorldMatrix();
-	DirectX::XMStoreFloat4x4(&(m_spConstantBaseMatrix->matWorld), DirectX::XMMatrixTranspose(matWorld)); // 셰이더에서 사용하려면 전치 필수!
-
 	DirectX::XMMATRIX matView = DirectX::XMLoadFloat4x4(&(m_spConstantBaseMatrix->matView));
 	DirectX::XMStoreFloat4x4(&(m_spConstantBaseMatrix->matView), DirectX::XMMatrixTranspose(matView)); // 셰이더에서 사용하려면 전치 필수!
 
 	DirectX::XMMATRIX matProjection = DirectX::XMLoadFloat4x4(&(m_spConstantBaseMatrix->matProjection));
 	DirectX::XMStoreFloat4x4(&(m_spConstantBaseMatrix->matProjection), DirectX::XMMatrixTranspose(matProjection)); // 셰이더에서 사용하려면 전치 필수!
-
-	std::shared_ptr<DX11ConstantBuffer> spConstantBuffer = SINGLETON(ResourceManager)->FindConstantBuffer("BaseMatrix");
-	spConstantBuffer->UpdateSubresource<ConstantBaseMatrix>(pGfx, m_spConstantBaseMatrix.get());
 }
 
-void GameObject2D::Render()
+void GameObject2D::Render(Graphics* pGfx)
 {
 	//D3D11_BLEND_DESC desc;
 	//::ZeroMemory(&desc, sizeof(D3D11_BLEND_DESC));
@@ -102,6 +97,11 @@ void GameObject2D::Render()
 	//m_pGfx->GetContext()->GetNativeDevice()->CreateBlendState(&desc, spBS.GetAddressOf());
 	//float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	//pDeviceCtx->OMSetBlendState(spBS.Get(), blendFactor, 0xffffffff);
+
+	DirectX::XMMATRIX matWorld = m_spTransform->BuildWorldMatrix();
+	DirectX::XMStoreFloat4x4(&(m_spConstantBaseMatrix->matWorld), DirectX::XMMatrixTranspose(matWorld)); // 셰이더에서 사용하려면 전치 필수!
+	std::shared_ptr<DX11ConstantBuffer> spConstantBuffer = SINGLETON(ResourceManager)->FindConstantBuffer("BaseMatrix");
+	spConstantBuffer->UpdateSubresource<ConstantBaseMatrix>(pGfx, m_spConstantBaseMatrix.get());
 
 	SINGLETON(ResourceManager)->ApplyGraphicsPipelneAndRender2D("GameObject2D_Shaders", "GameObject2D_Vertex", "BaseMatrix", m_strTexture2D, "DefaultSamplerState");
 }

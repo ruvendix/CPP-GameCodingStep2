@@ -13,15 +13,16 @@ public:
 	GameObject2D(const std::string& strName);
 	~GameObject2D();
 
-	void StartUp();
-	void Update(Graphics* pGfx);
-	void Render();
+	void StartUp(const DirectX::XMFLOAT2& scale);
+	void Update();
+	void Render(Graphics* pGfx);
 	void CleanUp();
 
 	void OnLeftKeyDown();
 	void OnLeftKeyUp();
 
 	void SetTexture2D(const std::string& strTexture2D) { m_strTexture2D = strTexture2D; }
+	std::shared_ptr<TransformComponent> GetTransform() const { return m_spTransform; }
 
 private:
 	std::string m_strName;

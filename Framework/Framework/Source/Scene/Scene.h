@@ -23,4 +23,6 @@ private:
 
 	std::string m_strName;
 	std::shared_ptr<GameObject2D> spGameObject2D;
+	std::shared_ptr<GameObject2D> spGameObject2D2;
+	std::shared_ptr<GameObject2D> spGameObject2D3;
 };
