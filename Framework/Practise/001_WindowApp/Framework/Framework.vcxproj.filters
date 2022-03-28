@@ -23,29 +23,8 @@
     <Filter Include="Source\ErrorHandler">
       <UniqueIdentifier>{7d039388-03dc-4077-8c33-5c4874371f2e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Config">
-      <UniqueIdentifier>{ce08333c-e08d-46d1-aafb-4f61e6b4ed75}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Graphics">
-      <UniqueIdentifier>{9941586d-846f-46f7-ab2f-372298fa6420}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Graphics\DX11">
-      <UniqueIdentifier>{a7ff3367-86e3-40c3-95a0-154471781fdd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Graphics\DX11\Resource">
-      <UniqueIdentifier>{5b9018a3-6ef4-45c9-b7e1-7e69513d896a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Scene">
-      <UniqueIdentifier>{dc7a7b88-e50e-4e13-adf1-dc698df93479}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shader">
       <UniqueIdentifier>{f4140f90-9234-487d-8ca6-2ae3d1c1155c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\InputDevice">
-      <UniqueIdentifier>{627d48e1-1823-43c2-93a1-b1ecb6ba1a6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Scene\GameObject">
-      <UniqueIdentifier>{8e3947b7-fce9-4769-9984-1cbc3c19010b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -87,8 +66,14 @@
     <ClInclude Include="Source\ErrorHandler\ErrorHandler.h">
       <Filter>Source\ErrorHandler</Filter>
     </ClInclude>
-    <ClInclude Include="Source\CommonInclude\Standard.h" />
-    <ClInclude Include="Source\CommonInclude\Windows.h" />
-    <ClInclude Include="Source\CommonInclude\Struct.h" />
+    <ClInclude Include="Source\CommonInclude\Standard.h">
+      <Filter>Source\CommonInclude</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CommonInclude\Struct.h">
+      <Filter>Source\CommonInclude</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CommonInclude\Windows.h">
+      <Filter>Source\CommonInclude</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
