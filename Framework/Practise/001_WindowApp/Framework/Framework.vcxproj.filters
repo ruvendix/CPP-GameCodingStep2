@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source\WindowApp">
+      <UniqueIdentifier>{0196fc51-36cf-4c36-b195-e98e0e8d7f56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\WindowApp\WindowProcedure">
+      <UniqueIdentifier>{28bcecd0-bf0f-406a-875e-88f19e8fee63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\WindowApp\WindowViewer">
+      <UniqueIdentifier>{e902b072-b339-495c-82cf-455ea92aec1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\PCH">
+      <UniqueIdentifier>{accdb067-01ab-439a-a614-704376af41bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CommonInclude">
+      <UniqueIdentifier>{98b27598-5d4d-4507-a8fc-fd79181f6efd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\ErrorHandler">
+      <UniqueIdentifier>{7d039388-03dc-4077-8c33-5c4874371f2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Config">
+      <UniqueIdentifier>{ce08333c-e08d-46d1-aafb-4f61e6b4ed75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics">
+      <UniqueIdentifier>{9941586d-846f-46f7-ab2f-372298fa6420}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics\DX11">
+      <UniqueIdentifier>{a7ff3367-86e3-40c3-95a0-154471781fdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics\DX11\Resource">
+      <UniqueIdentifier>{5b9018a3-6ef4-45c9-b7e1-7e69513d896a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Scene">
+      <UniqueIdentifier>{dc7a7b88-e50e-4e13-adf1-dc698df93479}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{f4140f90-9234-487d-8ca6-2ae3d1c1155c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\InputDevice">
+      <UniqueIdentifier>{627d48e1-1823-43c2-93a1-b1ecb6ba1a6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Scene\GameObject">
+      <UniqueIdentifier>{8e3947b7-fce9-4769-9984-1cbc3c19010b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WindowApp\WindowViewer\WindowViewer.cpp">
+      <Filter>Source\WindowApp\WindowViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WindowApp\WindowProcedure\WindowProcedure.cpp">
+      <Filter>Source\WindowApp\WindowProcedure</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WindowApp\WindowApp.cpp">
+      <Filter>Source\WindowApp</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PCH\PCH.cpp">
+      <Filter>Source\PCH</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ErrorHandler\ErrorHandler.cpp">
+      <Filter>Source\ErrorHandler</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\WindowApp\WindowViewer\WindowViewer.h">
+      <Filter>Source\WindowApp\WindowViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WindowApp\WindowProcedure\WindowProcedure.h">
+      <Filter>Source\WindowApp\WindowProcedure</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PCH\PCH.h">
+      <Filter>Source\PCH</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WindowApp\WindowApp.h">
+      <Filter>Source\WindowApp</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CommonInclude\Macro.h">
+      <Filter>Source\CommonInclude</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ErrorHandler\ErrorHandler.h">
+      <Filter>Source\ErrorHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CommonInclude\Standard.h" />
+    <ClInclude Include="Source\CommonInclude\Windows.h" />
+    <ClInclude Include="Source\CommonInclude\Struct.h" />
+  </ItemGroup>
+</Project>
