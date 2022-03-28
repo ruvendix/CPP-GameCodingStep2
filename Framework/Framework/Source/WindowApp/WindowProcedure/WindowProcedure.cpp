@@ -90,6 +90,11 @@ void WindowProcedure::OnSysKeyDown(HWND hWnd, UINT virtualKeyCode, BOOL bKeyDown
 		if (virtualKeyCode == VK_RETURN)
 		{
 			m_pWndApp->ToggleScreenMode();
+
+			if (SINGLETON(Config)->GetCurrentScreenMode() == EScreenMode::WINDOW)
+			{
+				::SetWindowPos(hWnd, nullptr, 0, 0, 0, 0, SWP_NOSIZE);
+			}
 		}
 		else if (virtualKeyCode == VK_F4)
 		{
