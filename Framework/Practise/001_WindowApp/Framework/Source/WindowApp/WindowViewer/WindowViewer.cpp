@@ -7,22 +7,22 @@ WindowViewer::WindowViewer(const std::string& strViewerName) :
 
 }
 
-HRESULT WindowViewer::Create(const WindowCreateInfo& wndCreateInfo)
+HRESULT WindowViewer::Create(const WindowViewerDescription& wndViewerDesc)
 {
 	// 윈도우를 생성하고 사용자에게 보여줍니다.
 	m_hWnd = ::CreateWindowEx(
-		WS_EX_APPWINDOW,
-		wndCreateInfo.strWndClassName.c_str(),
+		wndViewerDesc.dwExStyle,
+		wndViewerDesc.strWndClassName.c_str(),
 		m_strViewerName.c_str(),
-		wndCreateInfo.dwStyle,
-		wndCreateInfo.windowStartPos.x,
-		wndCreateInfo.windowStartPos.y,
-		wndCreateInfo.windowWidth,
-		wndCreateInfo.windowHeight,
+		wndViewerDesc.dwStyle,
+		wndViewerDesc.wndStartPos.x,
+		wndViewerDesc.wndStartPos.y,
+		wndViewerDesc.wndWidth,
+		wndViewerDesc.wndHeight,
 		HWND_DESKTOP,
 		nullptr,
-		wndCreateInfo.hInst,
-		wndCreateInfo.pWndProcedure);
+		wndViewerDesc.hInst,
+		wndViewerDesc.pWndProcedure);
 
 	if (m_hWnd == nullptr)
 	{

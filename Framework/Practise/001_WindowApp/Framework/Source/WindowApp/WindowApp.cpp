@@ -5,9 +5,6 @@
 #include "WindowViewer/WindowViewer.h"
 #include "WindowProcedure/WindowProcedure.h"
 
-/*
-윈도우 메시지를 넘겨주는 함수입니다.
-*/
 LRESULT WindowApp::TossWindowMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	/*
@@ -37,14 +34,14 @@ LRESULT WindowApp::TossWindowMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 		*/
 		if (pWndProcedure == nullptr)
 		{
-			// 기본 메시지 핸들러를 이용합니다.
+			// 기본 메시지 프로시저를 이용합니다.
 			return ::DefWindowProc(hWnd, msg, wParam, lParam);
 		}
 	}
 
 	return pWndProcedure->CallWindowProcedure(hWnd, msg, wParam, lParam);
 }
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 WindowApp::WindowApp(HINSTANCE hInst, const std::string& strWndClassName) :
 	m_hInst(hInst),
 	m_strWndClassName(strWndClassName)
@@ -105,33 +102,32 @@ HRESULT WindowApp::StartUp()
 		return E_FAIL;
 	}
 
-	WindowCreateInfo wndCreateInfo;
-	wndCreateInfo.strWndClassName = m_strWndClassName;
-	wndCreateInfo.hInst = m_hInst;
-	wndCreateInfo.dwExStyle = WS_EX_TOPMOST | WS_EX_APPWINDOW;
-	wndCreateInfo.dwStyle = WS_OVERLAPPEDWINDOW;
-	wndCreateInfo.windowWidth = 1600;
-	wndCreateInfo.windowHeight = 1200;
+	WindowViewerDescription wndViewerDesc;
+	wndViewerDesc.strWndClassName = m_strWndClassName;
+	wndViewerDesc.hInst = m_hInst;
+	wndViewerDesc.dwExStyle = WS_EX_APPWINDOW;
+	wndViewerDesc.dwStyle = WS_OVERLAPPEDWINDOW;
+	wndViewerDesc.wndWidth = 1600;
+	wndViewerDesc.wndHeight = 1200;
 
 	UINT screenWidth = static_cast<UINT>(::GetSystemMetrics(SM_CXSCREEN));
-	wndCreateInfo.windowStartPos.x = static_cast<UINT>((screenWidth - wndCreateInfo.windowWidth) * 0.5f);
+	wndViewerDesc.wndStartPos.x = static_cast<UINT>((screenWidth - wndViewerDesc.wndWidth) * 0.5f);
 
 	UINT screenHeight = static_cast<UINT>(::GetSystemMetrics(SM_CYSCREEN));
-	wndCreateInfo.windowStartPos.y = static_cast<UINT>((screenHeight - wndCreateInfo.windowHeight) * 0.5f);
+	wndViewerDesc.wndStartPos.y = static_cast<UINT>((screenHeight - wndViewerDesc.wndHeight) * 0.5f);
 
 	m_spWndProcedure = std::make_shared<WindowProcedure>();
-	wndCreateInfo.pWndProcedure = m_spWndProcedure.get();
+	wndViewerDesc.pWndProcedure = m_spWndProcedure.get();
 
 	m_spWndViewer = std::make_shared<WindowViewer>("WindowApp");
-	m_spWndViewer->Create(wndCreateInfo);
+	m_spWndViewer->Create(wndViewerDesc);
 
-	HWND hWnd = m_spWndViewer->GetWindowHandle();
-	if (hWnd == nullptr)
-	{
-		return E_FAIL;
-	}
-	
 	return S_OK;
+}
+
+void WindowApp::Do()
+{
+
 }
 
 void WindowApp::CleanUp()
@@ -142,9 +138,4 @@ void WindowApp::CleanUp()
 	{
 		COM_ERROR(::GetLastError());
 	}
-}
-
-void WindowApp::Do()
-{
-
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PCH.h"
+#include "CommonInclude/Windows.h"
 
 class WindowViewer;
 class WindowProcedure;
@@ -16,9 +16,8 @@ public:
 	int Run();
 
 	HRESULT StartUp();
-	void CleanUp();
-
 	void Do();
+	void CleanUp();
 
 private:
 	HINSTANCE m_hInst = nullptr;

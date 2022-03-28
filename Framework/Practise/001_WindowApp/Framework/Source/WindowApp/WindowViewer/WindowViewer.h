@@ -5,12 +5,12 @@
 
 class WindowProcedure;
 
-struct WindowCreateInfo
+struct WindowViewerDescription
 {
 	std::string strWndClassName;
-	Position2D windowStartPos;
-	UINT windowWidth = 0;
-	UINT windowHeight = 0;
+	Position2D wndStartPos;
+	UINT wndWidth = 0;
+	UINT wndHeight = 0;
 	DWORD dwStyle = 0;
 	DWORD dwExStyle = 0;
 	HINSTANCE hInst = nullptr;
@@ -22,7 +22,7 @@ class WindowViewer
 public:
 	WindowViewer(const std::string& strViewerName);
 
-	HRESULT Create(const WindowCreateInfo& wndCreateInfo);
+	HRESULT Create(const WindowViewerDescription& wndViewerDesc);
 	void Destroy();
 
 	HWND GetWindowHandle() { return m_hWnd; }

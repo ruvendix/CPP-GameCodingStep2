@@ -9,8 +9,8 @@ LRESULT CALLBACK WindowProcedure::CallWindowProcedure(HWND hWnd, UINT msg, WPARA
 	switch (msg)
 	{
 		HANDLE_MSG(hWnd, WM_CREATE, OnCreate);
-		HANDLE_MSG(hWnd, WM_DESTROY, OnDestroy);
 		HANDLE_MSG(hWnd, WM_LBUTTONDOWN, OnLButtonDown);
+		HANDLE_MSG(hWnd, WM_DESTROY, OnDestroy);
 	}
 
 	// 대부분의 메시지는 운영체제에게 보냅니다.
