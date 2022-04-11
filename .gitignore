@@ -34,6 +34,14 @@
 # Build
 *.pdb
 
-# Project folder
-/Framework/Intermediate/
-/Framework/.vs
+# Visual Studio Files
+*.suo
+*.log
+*.tlog
+*.lastbuildstate
+*.recipe
+*.ilk
+*.idb
+
+# Visual Studio Folders
+/Framework/.vs/
